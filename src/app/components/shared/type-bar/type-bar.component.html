@@ -1,0 +1,11 @@
+<div class="chat-container" >
+    <div class="type-bar" >
+      <textarea  class="typo-body1" [rows]="2" *ngIf="!password; else passInput" (input)="textInput(textarea)" #textarea></textarea>
+      <ng-template #passInput>
+        <input class="typo-body1" [type]="type">
+      </ng-template>
+      <button ripple>
+        <i class="material-icons">send</i>
+      </button>
+    </div> 
+</div>  
