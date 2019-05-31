@@ -1,5 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
-import { type } from 'os';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, ViewChild, Renderer2, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'type-bar',
@@ -11,9 +10,12 @@ export class TypeBarComponent implements OnInit, OnChanges {
   @Input() type:string;
   @Output() message:any = new EventEmitter();
 
+  @ViewChild("textarea") textarea: ElementRef;
+  @ViewChild("input") input: ElementRef;
+
   password:boolean = false;
 
-  constructor() { }
+  constructor(private render:Renderer2) { }
 
   ngOnInit() {
   }
@@ -24,7 +26,25 @@ export class TypeBarComponent implements OnInit, OnChanges {
   }
 
   textInput(textarea){
-    console.log(textarea);
+    
+    this.render.setStyle( textarea,'height', 'auto');
+    this.render.setStyle( textarea,'height', (textarea.scrollHeight ) + 'px');
+    
+  }
+
+  send(){
+    if(this.password && this.input.nativeElement.value != '') {
+    
+      this.message.emit(this.input.nativeElement.value);
+      this.input.nativeElement.value = '';
+    
+    } else if(this.textarea.nativeElement.value != '') {
+
+      this.message.emit(this.textarea.nativeElement.value);
+      this.textarea.nativeElement.value = '';
+      this.textInput(this.textarea.nativeElement);
+    
+    }
   }
 
 }

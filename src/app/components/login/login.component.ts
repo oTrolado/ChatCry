@@ -9,10 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
+  inputType:string = 'text';
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  receivedMessage(event){
+    console.log(event);
   }
 
 }

@@ -6,5 +6,5 @@
 </span>
 
 <section id="login-container">
-  <type-bar type='password'></type-bar>
+  <type-bar [type]='inputType' (message)='receivedMessage($event)'></type-bar>
 </section>

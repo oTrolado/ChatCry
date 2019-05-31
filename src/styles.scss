@@ -34,7 +34,17 @@
     justify-content: space-between;
     min-height: 56px;
 }
-    .type-bar textarea, input { width: 89%; border: none; resize: none;}
+    .type-bar textarea, input {     
+        width: 89%;
+        border: none;
+        resize: none;
+        overflow: hidden;
+        padding: 5px;
+        box-sizing: border-box;
+        text-align: justify;
+        color: $dark-text;
+    }
+
     .type-bar button {     
         border: none;
         background-color: white;
