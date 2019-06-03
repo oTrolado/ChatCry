@@ -10,14 +10,23 @@ import { Component, OnInit } from '@angular/core';
 export class LoginComponent implements OnInit {
 
   inputType:string = 'text';
+  newMessage:Object;
 
   constructor() { }
 
   ngOnInit() {
+    if(localStorage.getItem('chatCryProfile')){
+      //load and jump to main
+    } else {
+
+    }
   }
 
   receivedMessage(event){
-    console.log(event);
+    this.newMessage = {
+      content: event,
+      self: true
+    }
   }
 
 }

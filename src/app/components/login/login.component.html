@@ -5,6 +5,7 @@
   <span class="tab-title">
 </span>
 
-<section id="login-container">
+<section id="login-container" class="raized">
+  <talk [message]='newMessage'></talk>
   <type-bar [type]='inputType' (message)='receivedMessage($event)'></type-bar>
 </section>

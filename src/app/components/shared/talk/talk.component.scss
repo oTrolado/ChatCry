@@ -1,0 +1,21 @@
+@import '../../../../assets/styles/typography.scss';
+@import'../../../../assets/styles/colors.scss';
+
+.talk-container { overflow: auto; height: 63vh; width: 100%; box-sizing: border-box; padding: 0 14px 60px 14px; }
+
+.dialoge { 
+    border-radius: 5px;
+    max-width: 65%;
+    box-sizing: border-box;
+    padding: 14px;
+    color: $light-text;
+    display: inline-flex;
+    word-break: break-all;    
+ }
+
+.self-dialoge {     
+    background-color: #2196F3;
+    margin: 2px 0 2px auto;
+}
+
+.dialoge-row { display: flex; justify-content: end;}
