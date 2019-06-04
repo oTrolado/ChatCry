@@ -9,3 +9,21 @@
   <talk [message]='newMessage'></talk>
   <type-bar [type]='inputType' (message)='receivedMessage($event)'></type-bar>
 </section>
+
+<div id="promp-container" #prompcontainer>
+  <div class="promp-card raized">
+    <h1 class="typo-h6">Envie uma foto</h1>
+    <h4 class="typo-subtitle1">
+      Selecionar uma imagem do seu computador:
+    </h4>
+    <div class="button-container">
+      <button class="typo-button text-button warn" (click)="restart()" ripple>Recomeçar</button>
+      <div>
+        <input type="file" class="none" name="avatar">
+
+        <button class="typo-button text-button accent" ripple>Selecionar</button>
+        <button class="typo-button text-button primary" id="confirmar" ripple>Confirmar</button>
+      </div>
+    </div>
+  </div>
+</div>

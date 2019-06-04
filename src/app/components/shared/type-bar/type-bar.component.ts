@@ -25,26 +25,31 @@ export class TypeBarComponent implements OnInit, OnChanges {
     else this.password = false;
   }
 
-  textInput(textarea){
+  textInput(textarea:HTMLTextAreaElement):void {
     
     this.render.setStyle( textarea,'height', 'auto');
     this.render.setStyle( textarea,'height', (textarea.scrollHeight ) + 'px');
     
   }
 
-  send(){
+
+  send():void {
     if(this.password && this.input.nativeElement.value != '') {
     
       this.message.emit(this.input.nativeElement.value);
       this.input.nativeElement.value = '';
     
-    } else if(this.textarea.nativeElement.value != '') {
+    } else if(this.textarea.nativeElement) { 
+      if(this.textarea.nativeElement.value != '') {
 
-      this.message.emit(this.textarea.nativeElement.value);
-      this.textarea.nativeElement.value = '';
-      this.textInput(this.textarea.nativeElement);
+        this.message.emit(this.textarea.nativeElement.value);
+        this.textarea.nativeElement.value = '';
+        this.textInput(this.textarea.nativeElement);
     
+      }
     }
+
+    if(this.textarea) this.textarea.nativeElement.focus();
   }
 
 }

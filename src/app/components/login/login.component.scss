@@ -1,0 +1,44 @@
+#login-container { 
+    background-color: white;
+    width: 80vw;
+    z-index: 1;
+    margin: 130px auto 0 auto;
+    border-radius: 10px;
+    max-width: 1000px;
+    position: relative;
+    overflow: auto;
+}
+
+#promp-container { background-color: rgba(255, 255, 255, 0.49); height: 100vh; width: 100vw; position: fixed; z-index: 5; display: none;}
+
+.promp-card { 
+    background-color: white;
+    width: 90%;
+    max-width: 640px;
+    border-radius: 2px;
+    margin: calc(50vh - 108px) auto 0 auto;
+    box-sizing: border-box;
+    padding: 25px;    
+}
+    .promp-card h1 { margin-bottom: 14px; }
+    .promp-card .typo-subtitle1 { color: rgba(0, 0, 0, .54) }
+
+
+.button-container { 
+    display: inline-flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 80px; 
+}
+
+
+@media screen and (max-width: 860px){
+    #login-container {width: 95vw; height: 80vh;}
+}
+
+@media screen and (max-width: 480px){
+    #login-container { box-shadow: none; width: 100%;  margin: 0; border-radius: 0; box-sizing: border-box; padding-top: 8vh; height: 100vh;}
+    .button-container { flex-direction: column; justify-content: center; }
+    .button-container div:nth-child(2) { flex-direction: column; display: flex; }
+}

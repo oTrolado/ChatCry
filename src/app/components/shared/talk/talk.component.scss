@@ -1,7 +1,7 @@
 @import '../../../../assets/styles/typography.scss';
 @import'../../../../assets/styles/colors.scss';
 
-.talk-container { overflow: auto; height: 63vh; width: 100%; box-sizing: border-box; padding: 0 14px 60px 14px; }
+.talk-container { overflow: auto; height: 70vh; width: 100%; box-sizing: border-box; padding: 0 14px 60px 14px; }
 
 .dialoge { 
     border-radius: 5px;
@@ -18,4 +18,21 @@
     margin: 2px 0 2px auto;
 }
 
-.dialoge-row { display: flex; justify-content: end;}
+.other-dialoge {     
+    background-color: #4DD0E1;
+    margin: 2px 10px 2px 0;
+}
+
+.outher-dialoge-spacing { margin-left: 70px !important; }
+
+.dialoge-row { display: flex; }
+
+.botAvatar { border-radius: 50%; height: 60px; margin: 5px 10px 0 0;}
+
+
+@media screen and (max-width: 480px){
+    .botAvatar { height: 35px; margin: 5px 10px 0 0;}
+    .outher-dialoge-spacing { margin-left: 45px !important; }
+    .talk-container { height: 83vh; padding: 0 14px;}
+        .dialoge{ max-width: 90%; }
+}

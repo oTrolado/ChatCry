@@ -5,38 +5,38 @@
 
 *{top: 0; left: 0; position: static; margin: 0; padding: 0;}
 
+.none { display: none; }
+
 .raized { box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16); }
 
-#toolbar { background-color: $primary; width: 100vw; position: fixed; height: 260px; z-index: -1;}
-#login-container { 
-    background-color: white;
-    width: 80vw;
-    z-index: 1;
-    margin: 130px auto 0 auto;
-    border-radius: 10px;
-    max-width: 1000px;
-    position: relative;
-    overflow: auto;
-}
+.warn { color: $warn; }
+
+.accent { color: $secondary-dark; }
+
+.primary { color: $primary-dark; }
+
+button { background-color: transparent; border: none; cursor: pointer;}
+.text-button { padding: 12px; }
+
+#toolbar { background-color: #34afff; width: 100vw; position: fixed; height: 260px; z-index: -1;}
+
 .aplication-title { text-align: center; color: $light-text; position: fixed; width: 100vw; z-index: 3;}
+
+
+
 
 @media screen and (max-width: 1199px){
 
 }
 
 @media screen and (max-width: 860px){
-    #login-container {width: 95vw; height: 80vh;;}
 }
 
 @media screen and (max-width: 480px){
     #toolbar{ height: 8vh; z-index: 2; box-shadow: 0px 3px 6px rgba(0,0,0,0.16); }
-    #login-container { box-shadow: none; width: 100%;  margin: 0; border-radius: 0; box-sizing: border-box; padding-top: 8vh; height: 100vh;}
 
     .aplication-title h1 { display: none; }
     .aplication-title h2 { font-size: 34px; font-weight: 500; margin-top: 3px;}
-
-    .talk-container { height: 83vh !important; padding: 0 14px !important;}
-        .dialoge{ max-width: 90% !important; }
     
     .removible{ display: none;}
 }
