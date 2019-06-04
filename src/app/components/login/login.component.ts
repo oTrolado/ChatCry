@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, Renderer2 } from '@angular/core';
 
 @Component({
   selector: 'app-login',
@@ -23,8 +23,10 @@ export class LoginComponent implements OnInit, AfterViewInit {
   listeningValidade:boolean = false;
 
   @ViewChild('prompcontainer') prompContainer:ElementRef;
+  @ViewChild('input') input:ElementRef;
+  @ViewChild('avatar') avatar:ElementRef;
 
-  constructor() { }
+  constructor(private render:Renderer2) { }
 
   ngOnInit() {
     if(localStorage.getItem('chatCryProfile')){
@@ -130,6 +132,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
   }
 
   restart():void {
+
     this.user = { name: null, email: null, password: null, avatar: null };
     this.listeningEmail = false;
     this.listeningName = false;
@@ -143,5 +146,21 @@ export class LoginComponent implements OnInit, AfterViewInit {
       setTimeout(() => this.getUserName(), 1000);
     },400)
     
+  }
+
+  uploadAvatar():void {
+    this.input.nativeElement.click();
+  }
+
+  avatarLoaded(input):void {
+
+    let reader:FileReader = new FileReader();
+    reader.addEventListener('load', (event) => {
+      console.log(event);
+      this.render.setAttribute(this.avatar.nativeElement, 'src', event.target['result']);
+    });
+    reader.readAsDataURL(input.files[0]);
+    console.log(input.value);
+  
   }
 }

@@ -16,12 +16,13 @@
     <h4 class="typo-subtitle1">
       Selecionar uma imagem do seu computador:
     </h4>
+    <img src="" alt="Avatar" #avatar id="avatar">
     <div class="button-container">
       <button class="typo-button text-button warn" (click)="restart()" ripple>Recomeçar</button>
       <div>
-        <input type="file" class="none" name="avatar">
+        <input type="file" class="none" name="avatar" accept="image/png, image/jpeg" (change)="avatarLoaded(input)" multiple="false" #input>
 
-        <button class="typo-button text-button accent" ripple>Selecionar</button>
+        <button class="typo-button text-button accent" (click)="uploadAvatar()" ripple>Selecionar</button>
         <button class="typo-button text-button primary" id="confirmar" ripple>Confirmar</button>
       </div>
     </div>
