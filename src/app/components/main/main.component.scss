@@ -1,0 +1,40 @@
+#main-container { display: flex; flex-direction: row; height: 100vh;}
+
+#sidebar { width: 70px; display: flex; }
+
+#chat-container { 
+    position: relative;
+    width: calc(100% - 370px); 
+} 
+
+.menu-wrapper { display: flex; flex-direction: row;}
+
+.tabs-inner {
+    width:300px;
+    background-color: #EEEEEE;
+}
+
+.userAvatar {
+    width: 60px;
+    height: 60px;
+    margin: 20px auto;
+    border-radius: 50%;
+}
+
+@media screen and (min-width: 1300px){
+    .tabs-inner { width: 350px;}
+    #chat-container { 
+      width: calc(100% - 420px); 
+    } 
+}
+
+@media screen and (max-width: 1299px){
+
+}
+
+@media screen and (max-width: 860px){
+}
+
+@media screen and (max-width: 480px){
+
+}

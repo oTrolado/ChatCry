@@ -11,7 +11,8 @@
     color: $light-text;
     display: inline-flex;
     word-break: break-all;    
- }
+}
+.dialoge P { margin: auto; }
 
 .self-dialoge {     
     background-color: #2196F3;
@@ -23,16 +24,17 @@
     margin: 2px 10px 2px 0;
 }
 
-.outher-dialoge-spacing { margin-left: 70px !important; }
+.other-dialoge-spacing { margin-left: 70px !important; }
 
 .dialoge-row { display: flex; }
 
 .botAvatar { border-radius: 50%; height: 60px; margin: 5px 10px 0 0;}
 
+#button-login { margin-left: 5px; }
 
 @media screen and (max-width: 480px){
     .botAvatar { height: 35px; margin: 5px 10px 0 0;}
-    .outher-dialoge-spacing { margin-left: 45px !important; }
+    .other-dialoge-spacing { margin-left: 45px !important; }
     .talk-container { height: 83vh; padding: 0 14px;}
         .dialoge{ max-width: 90%; }
 }

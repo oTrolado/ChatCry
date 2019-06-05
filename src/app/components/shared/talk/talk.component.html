@@ -1,3 +1,18 @@
 <div class="talk-container" #container>
-
+    <div class="dialoge-row typo-body1" *ngFor="let item of messages; index as i">
+        <img [src]="item.url" alt="avatar" class="botAvatar raized" *ngIf="avatar(i)">
+        <div class="dialoge" [ngClass]="{
+            'self-dialoge': item.self, 
+            'other-dialoge': !item.self, 
+            'other-dialoge-spacing': !avatar(i) && !item.self
+        }"> 
+            <p>{{ item.content }}</p>
+            <button id="button-login" 
+                    class="contained-button typo-button primary" 
+                    (click)="login()"
+                    *ngIf="item.enter">
+                Entrar
+            </button>
+        </div>
+    </div>
 </div>

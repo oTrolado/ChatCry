@@ -1,0 +1,16 @@
+<div id="main-container">
+  <div class="menu-wrapper">
+    <div id="sidebar">
+      <img src="" alt="Avatar" class="userAvatar raized" #selfAvatar>
+    </div>
+
+    <div class="tabs-inner">
+
+    </div>
+  </div>
+  <section id="chat-container">
+      <talk [message]='newMessage'></talk>
+      <type-bar  (message)='receivedMessage($event)'></type-bar>
+  </section>
+
+</div>

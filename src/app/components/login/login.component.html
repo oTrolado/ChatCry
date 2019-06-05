@@ -1,12 +1,15 @@
+<header id="toolbar" ripple>
+  
+
+
 <div class="aplication-title">
     <h1 class="typo-h2">Bem Vindo</h1>
     <h2 class="typo-subtitle1">ChatCry<span class="removible"> 1.0 - Conectando As Pessoas</span></h2>
   </div>
-  <span class="tab-title">
-</span>
+</header>
 
 <section id="login-container" class="raized">
-  <talk [message]='newMessage'></talk>
+  <talk [message]='newMessage' (loginEvent)="login()"></talk>
   <type-bar [type]='inputType' (message)='receivedMessage($event)'></type-bar>
 </section>
 
@@ -23,7 +26,7 @@
         <input type="file" class="none" name="avatar" accept="image/png, image/jpeg" (change)="avatarLoaded(input)" multiple="false" #input>
 
         <button class="typo-button text-button accent" (click)="uploadAvatar()" ripple>Selecionar</button>
-        <button class="typo-button text-button primary" id="confirmar" ripple>Confirmar</button>
+        <button class="typo-button text-button primary" id="confirmar" (click)="confirmAvatar()" ripple>Confirmar</button>
       </div>
     </div>
   </div>

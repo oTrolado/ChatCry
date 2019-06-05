@@ -1,4 +1,10 @@
-import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, Renderer2 } from '@angular/core';
+import { Component, 
+          OnInit, 
+          AfterViewInit, 
+          ElementRef, 
+          ViewChild, 
+          Renderer2 } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -14,25 +20,36 @@ export class LoginComponent implements OnInit, AfterViewInit {
     name: null,
     email: null,
     password: null,
-    avatar: null
+    avatar: null,
+    auth: false
   };
 
   listeningName:boolean = false;
   listeningEmail:boolean = false;
   listeningPassword:boolean = false;
   listeningValidade:boolean = false;
+  listeningLogin:boolean = false;
 
   @ViewChild('prompcontainer') prompContainer:ElementRef;
   @ViewChild('input') input:ElementRef;
   @ViewChild('avatar') avatar:ElementRef;
 
-  constructor(private render:Renderer2) { }
+  constructor(
+    private render:Renderer2,
+    private router:Router
+    ) { }
 
   ngOnInit() {
-    if(localStorage.getItem('chatCryProfile')){
-      //load and jump to main
-    } else {
-      this.sendMessage('Bem vindo ao ChatCry!!!<br/> Muitas conversas emocionantes te aguardam, mas primeiro precisamos tomar os passos inicias certo?', false);
+    if(localStorage.getItem('chatCryProfile')) { 
+      this.user = JSON.parse(localStorage.getItem('chatCryProfile'));
+      setTimeout(() => {
+        this.sendMessage('Digite "esqueça" para que eu não lembre de você :´(', false)
+        setTimeout(() => this.getUserLogin(), 1000);
+      },100);
+       
+    }
+    else {
+      this.sendMessage('Bem vindo ao ChatCry!!! \n Muitas conversas emocionantes te aguardam, mas primeiro precisamos tomar os passos inicias certo?', false);
       setTimeout(() => this.sendMessage('Digite "recomeçar" para iniciar de novo, ok?', false), 500);
       setTimeout(() => this.getUserName(), 1000);
     }
@@ -47,21 +64,27 @@ export class LoginComponent implements OnInit, AfterViewInit {
     return true;
   }
 
-  sendMessage(message:string, self:boolean):void {
-    if(this.inputType == 'password') message = '*'.repeat(message.length);
+  sendMessage(message:string, self:boolean, enter?:boolean):void {
+    if(this.inputType == 'password') 
+      message = '*'.repeat(message.length);
     
-    this.newMessage = {
+      let msg = {
       content: message,
       self: self,
-      url: 'assets/bot.png'
+      url: 'assets/bot.png',
+      enter: false
     }
+    if(enter) msg.enter = true;
+
+    this.newMessage = msg;
   }
 
   receivedMessage(event:string): void {
     
     this.sendMessage(event,true);
 
-    if(event == 'recomeçar' || event == '"recomeçar"') return this.restart();
+    if(event == 'esqueça' || event == 'Esqueça') return this.forget();
+    if(event == 'recomeçar' || event == 'Recomeçar') return this.restart();
 
     if(this.listeningName){
       this.user.name = event;
@@ -101,6 +124,17 @@ export class LoginComponent implements OnInit, AfterViewInit {
         }, 1000);
       }
     }
+    else if(this.listeningLogin) {
+      this.inputType = 'text';
+      if(event == this.user.password) {
+        setTimeout (() => this.login(), 1000);
+      }
+      else 
+        setTimeout (() => {
+          this.sendMessage(this.user.name+' essa não é sua senha ¬¬', false)
+          this.inputType = 'password';
+        }, 1000);
+    }
   }
 
   getUserName():void {
@@ -131,6 +165,12 @@ export class LoginComponent implements OnInit, AfterViewInit {
     setTimeout(() => this.prompContainer.nativeElement.style.display  = 'block', 3000);
   }
 
+  getUserLogin():void {
+    this.sendMessage('Bem vindo de volta ' + this.user.name + ', Qual sua senha?', false);
+    this.listeningLogin = true;
+    this.inputType = 'password';
+  }
+
   restart():void {
 
     this.user = { name: null, email: null, password: null, avatar: null };
@@ -138,7 +178,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
     this.listeningName = false;
     this.listeningPassword = false;
     this.listeningValidade = false;
-    this.inputType = 'text';
 
     setTimeout(() => {
       this.sendMessage('"O insucesso é apenas uma oportunidade para recomeçar com mais inteligência." - Henry Ford', false);
@@ -156,11 +195,47 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
     let reader:FileReader = new FileReader();
     reader.addEventListener('load', (event) => {
-      console.log(event);
+      this.render.setStyle(this.avatar.nativeElement, 'visibility', 'visible');
       this.render.setAttribute(this.avatar.nativeElement, 'src', event.target['result']);
+      this.user.avatar = event.target['result'];
     });
     reader.readAsDataURL(input.files[0]);
-    console.log(input.value);
   
   }
+
+  confirmAvatar():void {
+    if(this.user.avatar == null) return alert('Por favor selecione uma imagem ;)');
+    setTimeout(() => {
+      this.prompContainer.nativeElement.style.display  = 'none'
+      localStorage.setItem('chatCryProfile', JSON.stringify(this.user));
+      this.loginButton();
+    }, 2000);
+  }
+
+  loginButton():boolean {
+    if(localStorage.getItem('chatCryProfile')) {
+      this.sendMessage('Deu tudo certo!!! Aperte o botão e veja a magia ;)', false);
+      setTimeout(()=> this.sendMessage('', false, true));
+      return true
+    }
+    return false
+  } 
+
+  forget():void {
+    this.user = {}
+    localStorage.removeItem('chatCryProfile');
+    this.inputType = 'text';
+    this.getUserName();
+  }
+
+  login():void { 
+    this.user.auth = true;
+    localStorage.setItem('chatCryProfile', JSON.stringify(this.user));
+    this.redirect();
+  }
+
+  redirect():void {
+    this.router.navigate(['main']);
+  }
+
 }
