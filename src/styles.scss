@@ -29,6 +29,16 @@ button { background-color: transparent; border: none; cursor: pointer;}
 #sidebar { background-color: $primary-dark; }
 
 
+
+.menuItem { text-align: center; cursor: pointer; color: $light-text; }
+
+.menuItem i { font-size: 38px; }
+
+.menuItem h3 { margin-top: -5px; }
+
+.menuItem:last-child { margin: auto 0 10px 0; }; 
+
+
 @media screen and (max-width: 1199px){
 
 }

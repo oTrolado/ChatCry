@@ -9,6 +9,7 @@ import { TypeBarComponent } from './components/shared/type-bar/type-bar.componen
 import { RippleDirective } from './components/shared/ripple/ripple.directive';
 import { TalkComponent } from './components/shared/talk/talk.component';
 import { MainComponent } from './components/main/main.component';
+import { TabsComponent } from './components/shared/tabs/tabs.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { MainComponent } from './components/main/main.component';
     TypeBarComponent,
     RippleDirective,
     TalkComponent,
-    MainComponent
+    MainComponent,
+    TabsComponent
   ],
   imports: [
     BrowserModule,
