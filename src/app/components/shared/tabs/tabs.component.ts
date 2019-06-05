@@ -45,17 +45,18 @@ export class TabsComponent implements OnInit, AfterViewInit {
   }
 
   select(item):boolean {
-    if(item = this.active) return false;
-   
-    this.translateIndicator(item);
+    if(item == this.active) return false;
     this.active = item;
+    
+    this.translateIndicator(item);
+    
 
   }
 
   translateIndicator(item:number) {
-    console.log(this.header);
     
-    console.log(this.headers[item]["clientTop"]);
+    this.render.setStyle(this.indicator,'transform', 'translateY('+((54*this.active)+(20*this.active))+'px)')
+    
   }
 
 }
