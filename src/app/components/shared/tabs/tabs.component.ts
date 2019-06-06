@@ -1,11 +1,15 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef,Renderer2 } from '@angular/core';
 
+
 @Component({
   selector: 'tabs',
   templateUrl: './tabs.component.html',
   styleUrls: ['./tabs.component.scss']
 })
 export class TabsComponent implements OnInit, AfterViewInit {
+
+  animating:boolean = false;
+  forward:boolean = false;
 
   active:number = 0;
   headers:HTMLCollection;
@@ -45,17 +49,39 @@ export class TabsComponent implements OnInit, AfterViewInit {
   }
 
   select(item):boolean {
-    if(item == this.active) return false;
-    this.active = item;
+    if(item == this.active || this.animating) return false;
     
     this.translateIndicator(item);
+    this.changeContent(item);
+    return true;
+  }
+
+  changeContent(content:number):any {
+  
+    this.animating = true;
+    
     
 
+    let actual = this.container.nativeElement.children[this.active];
+    let newContent = this.container.nativeElement.children[content];
+
+    this.render.setStyle(newContent, 'display', 'block');
+        
+    if(content > this.active)
+      this.forward = true;
+    else 
+    this.forward = false;
+
+    setTimeout(() => {
+      this.active = content;
+      this.animating = false;
+      this.render.setStyle(actual, 'display', 'none');
+    }, 500);
   }
 
   translateIndicator(item:number) {
     
-    this.render.setStyle(this.indicator,'transform', 'translateY('+((54*this.active)+(20*this.active))+'px)')
+    this.render.setStyle(this.indicator,'transform', 'translateY('+((54*item)+(20*item))+'px)');
     
   }
 

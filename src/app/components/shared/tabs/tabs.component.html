@@ -38,8 +38,20 @@
     <div id="indicator"></div>
   </div>
 </header>
-<section id="tabs-container" #container>
-  <div class="tab-content"></div>
-  <div class="tab-content"></div>
-  <div class="tab-content"></div>
-</section>
+<div class="tab-container-wrapper">
+  <section id="tabs-container" [ngClass]="{
+    'anamitaion-forward': animating && forward, 
+    'anamitaion-backward': animating && !forward
+  }" #container>
+
+    <div class="tab-content">
+      Content 1
+    </div>
+    <div class="tab-content">
+      Content 2
+    </div>
+    <div class="tab-content">
+      Content 3
+    </div>
+  </section>
+</div>
