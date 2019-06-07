@@ -38,12 +38,18 @@ button { background-color: transparent; border: none; cursor: pointer;}
 
 .menuItem:last-child { margin: auto 0 10px 0; }; 
 
+.avatar { width: 50px; height: 50px; border-radius: 50%;}
+
+.userAvatar { margin: 20px auto; }
+
+.toggle { position: absolute; top: 5px; right: 5px; left: auto; cursor: pointer; z-index: 1; border-radius: 3px;}
+.menu { position: fixed; background-color: rgba(255, 255, 255, 0.5); }
 
 @media screen and (max-width: 1199px){
 
 }
 
-@media screen and (max-width: 860px){
+@media screen and (max-width: 800px){
 }
 
 @media screen and (max-width: 480px){
@@ -51,6 +57,8 @@ button { background-color: transparent; border: none; cursor: pointer;}
 
     .aplication-title h1 { display: none; }
     .aplication-title h2 { font-size: 34px; font-weight: 500; margin-top: 3px;}
+    
+    .menuItem h3 { display: none; }
     
     .removible{ display: none;}
 }

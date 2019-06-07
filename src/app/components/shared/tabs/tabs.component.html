@@ -1,9 +1,9 @@
-<header id="tabs-header" #header>
+<header id="tabs-header" #header (window:resize)="resize()">
   <div id="header-labs">
     <div class="menuItem " 
           (mouseover)="mouseover(0)"  
           (mouseout)="mouseout()" 
-          (click)="select(0)" ripple>
+          (click)="select(0)" ripple #menuIt>
 
         <i class="material-icons">
           question_answer
@@ -39,6 +39,11 @@
   </div>
 </header>
 <div class="tab-container-wrapper">
+
+  <i class="material-icons toggle menu" (click)="menutoggle()" ripple>
+    menu
+  </i>
+
   <section id="tabs-container" [ngClass]="{
     'anamitaion-forward': animating && forward, 
     'anamitaion-backward': animating && !forward
@@ -47,8 +52,34 @@
     <div class="tab-content">
       Content 1
     </div>
-    <div class="tab-content">
-      Content 2
+    <div class="tab-content" [ngStyle]="{'overflow-y' : floatInfo ? 'hidden' : 'auto'}" #contactContainer>
+      <div class="searchBox">
+        <i class="material-icons" ripple>
+          search
+        </i>
+        <input type="text" placeholder="Pesquisar" class="typo-caption"> 
+      </div>
+      
+      <div class="contactList">
+        <h3 class="typo-subtitle1">Contatos</h3>
+
+        <div class="contact" *ngFor="let contact of contactList; index as i" (click)="toggleInfo(contactContainer, i)" ripple>
+          <img [src]="contact.imagem" alt="Avatar" class="contactAvatar avatar raized">
+          <span class="typo-h6">{{contact.nome}}</span>
+        </div>
+
+      </div>
+
+      <div class="floatInfo raized" [ngStyle]="{'transform' : floatInfo ? 'translateX(0%)' : 'translateX(-100%)'}">
+          <i class="material-icons toggle" (click)="toggleInfo()" ripple>
+            close
+          </i>
+
+          <img [src]="sanitizeURL(openContact['imagem'])" alt="avatar" class="BigAvatar raized">
+          <h2 class="typo-h4">{{openContact["nome"]}}</h2>
+          <h4 class="typo-subtitle2">Ultimo acesso:  {{openContact["ultimoAcesso"] | date:'short' }}</h4>
+      </div>
+
     </div>
     <div class="tab-content">
       Content 3

@@ -1,88 +1,135 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef,Renderer2 } from '@angular/core';
-
+import {
+    Component,
+    OnInit,
+    AfterViewInit,
+    ViewChild,
+    ElementRef,
+    Renderer2,
+    Input,
+    Output,
+    EventEmitter
+} from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
-  selector: 'tabs',
-  templateUrl: './tabs.component.html',
-  styleUrls: ['./tabs.component.scss']
+    selector: 'tabs',
+    templateUrl: './tabs.component.html',
+    styleUrls: ['./tabs.component.scss']
 })
 export class TabsComponent implements OnInit, AfterViewInit {
 
-  animating:boolean = false;
-  forward:boolean = false;
+    animating: boolean = false;
+    forward: boolean = false;
 
-  active:number = 0;
-  headers:HTMLCollection;
-  containers:HTMLCollection;
-  indicator:HTMLDivElement;
+    floatInfo: boolean = false;
 
-  @ViewChild('header') header:ElementRef;
-  @ViewChild('container') container:ElementRef;
+    openContact: Object = { nome: '', imagem: '', ultimoAcesso: '' };
 
-  constructor(private render:Renderer2) { }
+    active: number = 0;
+    headers: HTMLCollection;
+    containers: HTMLCollection;
+    indicator: HTMLDivElement;
 
-  ngOnInit() {
-  }
+    @Input() contactList: any;
+    @Output() menuToggle: EventEmitter<boolean> = new EventEmitter;
 
-  ngAfterViewInit() {
-    
-    this.containers = this.container.nativeElement.querySelectorAll('.tab-content');
-    for(let i = 1; i < this.containers.length; i++) 
-      this.render.setStyle(this.containers[i], 'display', 'none');
+    @ViewChild('header') header: ElementRef;
+    @ViewChild('container') container: ElementRef;
+    @ViewChild('menuIt') menuIt: ElementRef;
 
-    this.headers = this.header.nativeElement.querySelectorAll('.menuItem');
+    constructor(
+        private render: Renderer2,
+        private sanitizer: DomSanitizer
+    ) { }
 
-    let indicatorContainer = this.header.nativeElement.querySelector('#indicator-wrapper');
-    
-    this.render.setStyle(indicatorContainer, 'height', this.header.nativeElement.clientHeight + 'px');
+    ngOnInit() {
+    }
 
-    this.indicator = this.header.nativeElement.querySelector('#indicator')
-  }
+    ngAfterViewInit() {
 
-  mouseover(item):void {
-    if(item == this.active)
-      this.render.setStyle(this.indicator,'boxShadow','white 1px 0px 9px 3px');
-  }
+        this.containers = this.container.nativeElement.querySelectorAll('.tab-content');
+        for (let i = 1; i < this.containers.length; i++)
+            this.render.setStyle(this.containers[i], 'display', 'none');
 
-  mouseout():void {
-    this.render.setStyle(this.indicator,'boxShadow','white 1px 0px 9px 1px');
-  }
+        this.headers = this.header.nativeElement.querySelectorAll('.menuItem');
 
-  select(item):boolean {
-    if(item == this.active || this.animating) return false;
-    
-    this.translateIndicator(item);
-    this.changeContent(item);
-    return true;
-  }
+        let indicatorContainer = this.header.nativeElement.querySelector('#indicator-wrapper');
 
-  changeContent(content:number):any {
-  
-    this.animating = true;
-    
-    
+        this.render.setStyle(indicatorContainer, 'height', this.header.nativeElement.clientHeight + 'px');
 
-    let actual = this.container.nativeElement.children[this.active];
-    let newContent = this.container.nativeElement.children[content];
+        this.indicator = this.header.nativeElement.querySelector('#indicator');
 
-    this.render.setStyle(newContent, 'display', 'block');
-        
-    if(content > this.active)
-      this.forward = true;
-    else 
-    this.forward = false;
+        this.resize();
+    }
 
-    setTimeout(() => {
-      this.active = content;
-      this.animating = false;
-      this.render.setStyle(actual, 'display', 'none');
-    }, 500);
-  }
 
-  translateIndicator(item:number) {
-    
-    this.render.setStyle(this.indicator,'transform', 'translateY('+((54*item)+(20*item))+'px)');
-    
-  }
+    mouseover(item): void {
+        if (item == this.active)
+            this.render.setStyle(this.indicator, 'boxShadow', 'white 1px 0px 9px 3px');
+    }
+
+    mouseout(): void {
+        this.render.setStyle(this.indicator, 'boxShadow', 'white 1px 0px 9px 1px');
+    }
+
+    select(item): boolean {
+        if (item == this.active || this.animating) return false;
+
+        this.translateIndicator(item);
+        this.changeContent(item);
+        return true;
+    }
+
+    changeContent(content: number): any {
+
+        this.animating = true;
+
+        let actual = this.container.nativeElement.children[this.active];
+        let newContent = this.container.nativeElement.children[content];
+
+        this.render.setStyle(newContent, 'display', 'flex');
+
+        if (content > this.active)
+            this.forward = true;
+        else
+            this.forward = false;
+
+        setTimeout(() => {
+            this.active = content;
+            this.animating = false;
+            this.render.setStyle(actual, 'display', 'none');
+        }, 490);
+    }
+
+    toggleInfo(container?: HTMLDivElement, index?: number): boolean {
+
+        if (!!container)
+            container.scrollTop = 0;
+
+        if (index != undefined)
+            this.openContact = this.contactList[index];
+
+        return this.floatInfo = !this.floatInfo;
+
+    }
+
+    translateIndicator(item: number): void {
+        let itemHeight:number = this.menuIt.nativeElement.clientHeight;
+        this.render.setStyle(this.indicator, 'transform', 'translateY(' + (itemHeight * item) + 'px)');
+    }
+
+    menutoggle(): any {
+        return this.menuToggle.emit(true);
+    }
+
+    sanitizeURL(url: string): any {
+        return this.sanitizer.bypassSecurityTrustUrl(url);
+    }
+
+    resize() {
+        let itemHeight:number = this.menuIt.nativeElement.clientHeight;
+        if(window.innerWidth < 480)
+            this.render.setStyle(this.indicator, 'height',itemHeight + 'px');
+    }
 
 }

@@ -1,7 +1,7 @@
 @import '../../../../assets/styles/typography.scss';
 @import'../../../../assets/styles/colors.scss';
 
-.talk-container { overflow: auto; height: 70vh; width: 100%; box-sizing: border-box; padding: 0 14px 60px 14px; }
+.talk-container { overflow: auto; height: 100%; width: 100%; box-sizing: border-box; padding: 0 14px 60px 14px; }
 
 .dialoge { 
     border-radius: 5px;
@@ -35,6 +35,6 @@
 @media screen and (max-width: 480px){
     .botAvatar { height: 35px; margin: 5px 10px 0 0;}
     .other-dialoge-spacing { margin-left: 45px !important; }
-    .talk-container { height: 83vh; padding: 0 14px;}
+    
         .dialoge{ max-width: 90%; }
 }

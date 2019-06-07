@@ -1,7 +1,7 @@
-<div id="main-container">
-  <div class="menu-wrapper">
+<div id="main-container" (window:resize)="resize()">
+  <div class="menu-wrapper" [ngStyle]="{'transform': hideMenu ? 'translateX(calc(-100% - 10px))' : 'translateX(0%)'}">
     <div id="sidebar">
-      <img src="" alt="Avatar" class="userAvatar raized" #selfAvatar>
+      <img src="" alt="Avatar" class="userAvatar avatar raized" #selfAvatar>
       <div class="menuItem " (click)="quit()" ripple>
           <i class="material-icons">
             exit_to_app
@@ -11,12 +11,20 @@
     </div>
 
     <div class="tabs-inner">
-      <tabs></tabs>
+      <tabs [contactList]='contactList' (menuToggle)="menuToggle($event)"></tabs>
     </div>
   </div>
   <section id="chat-container">
-      <talk [message]='newMessage'></talk>
-      <type-bar  (message)='receivedMessage($event)'></type-bar>
+    <div class="toolbar raized typo-h6"> 
+      
+      ChatCry
+      <i class="material-icons toggle menu" (click)="menuToggle(false)" ripple>
+        menu
+      </i>
+
+    </div>
+    <talk [message]='newMessage'></talk>
+    <type-bar  (message)='receivedMessage($event)'></type-bar>
   </section>
 
 </div>
