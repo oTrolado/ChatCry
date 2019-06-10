@@ -84,7 +84,7 @@ export class RippleDirective {
   }
 
   @HostListener('mouseout',['$event']) mouseOut(event){//REMOVE O RIPPLE AO MOUSE OUT
-
+    if(!event.fromElement) return new Promise(res => res(null));
     if(event.fromElement.classList.contains('prevent')){
      
       return new Promise((resolve, reject) => {

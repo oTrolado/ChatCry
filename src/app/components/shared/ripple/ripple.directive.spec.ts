@@ -1,68 +1,100 @@
-import { ElementRef, ɵConsole } from '@angular/core';
+
+import {
+  ElementRef,
+  Renderer2
+} from '@angular/core';
 
 
-import { RippleDirective } from './ripple.directive';
+import {
+  RippleDirective
+} from './ripple.directive';
+
 
 describe('RippleDirective', () => {
 
   let testElement = document.createElement('div');
-  
+
   let elementRef = new ElementRef(testElement);
-  
-  const renderer2Mock = jasmine.createSpyObj('renderer2Mock', [
-    'destroy',
-    'createElement',
-    'createComment',
-    'createText',
-    'destroyNode',
-    'appendChild',
-    'insertBefore',
-    'removeChild',
-    'selectRootElement',
-    'parentNode',
-    'nextSibling',
-    'setAttribute',
-    'removeAttribute',
-    'addClass',
-    'removeClass',
-    'setStyle',
-    'removeStyle',
-    'setProperty',
-    'setValue',
-    'listen'
-  ]);
-  
-  let directive = new RippleDirective(elementRef, renderer2Mock);
+
+  class Teste extends Renderer2 {
+
+    createComment = () => { }
+    createText = () => { }
+    data = () => { }
+    destroy = () => { }
+    insertBefore = () => { }
+    listen;
+    nextSibling = () => { }
+    parentNode = () => { }
+    removeAttribute = () => { }
+    removeChild = () => { }
+    removeClass = () => { }
+    removeStyle = () => { }
+    selectRootElement = () => { }
+    setAttribute = () => { }
+    setProperty = () => { }
+    setValue = () => { }
+
+    addClass = (elm: HTMLElement, cls: string) => {
+
+      elm.classList.add(cls);
+
+    }
+
+    createElement = (elm: string) => {
+
+      return document.createElement(elm);
+
+    }
+
+    setStyle = (elm: HTMLElement, prop: string, val: any) => {
+
+      elm.style[prop] = val;
+
+    }
+
+    appendChild = (elm: HTMLElement, chil: HTMLElement) => {
+
+      elm.appendChild(chil);
+
+    }
+  }
+
+
+
+  let rmock = new Teste();
+
+
+  let directive = new RippleDirective(elementRef,rmock);
+
+
+
 
 
   beforeAll(() => {
-    
     testElement.style.width = '100px';
+
     testElement.style.height = '90px';
 
-    renderer2Mock.addClass = (elm: HTMLElement, cls: string) =>{
-      elm.classList.add(cls);
-    }
-
-    renderer2Mock.createElement = (elm: string) =>{
-      return document.createElement(elm);
-    }
-
-    renderer2Mock.setStyle = (elm: HTMLElement, prop: string, val: any) =>{
-      elm.style[prop] = val;
-    }
-    
-    renderer2Mock.appendChild = (elm: HTMLElement, chil: HTMLElement) =>{
-      elm.appendChild(chil);
-    }
-    
+    let rmock = new Teste();
   });
 
+
+
   beforeEach(() => {
+
     testElement.remove();
-    testElement = document.createElement('div');
-    elementRef = new ElementRef(testElement);
-    directive = new RippleDirective(elementRef, renderer2Mock);
+
+    testElement =
+      document.createElement('div');
+
+    elementRef =
+      new ElementRef(testElement);
+
+    directive =
+      new RippleDirective(elementRef,
+        rmock);
+
   });
 
   it('should create an instance', () => {
@@ -75,74 +107,69 @@ describe('RippleDirective', () => {
 
   it('should create ripple inside element', () => {
     let e = new MouseEvent('mouseDown');
-    
-    testElement.addEventListener('mouseDown',(event) => { 
+
+    testElement.addEventListener('mouseDown', (event) => {
       directive.mouseDown(event);
     });
 
     testElement.dispatchEvent(e);
-    
+
     expect(testElement.querySelectorAll('.prevent').length).toBeGreaterThanOrEqual(1);
     expect(testElement.querySelectorAll('.ripple').length).toBeGreaterThanOrEqual(1);
   });
 
-  it('should delete ripple inside element onMouseUp', (done: DoneFn) => {
+  it('should delete ripple inside element onMouseUp', async () => {
     let down = new MouseEvent('mouseDown');
     let up = new MouseEvent('mouseup');
 
-    testElement.addEventListener('mouseDown', (event) => { 
+    testElement.addEventListener('mouseDown', (event) => {
       directive.mouseDown(event);
     });
 
     testElement.dispatchEvent(down);
 
-    testElement.querySelector('.prevent').addEventListener('mouseup', (event) => {
-      directive.mouseUp(event)
-      .then( result => {
+    testElement.querySelector('.prevent').addEventListener('mouseup', async (event) => {
+     await directive.mouseUp(event)
+        .then(result => {
 
-        expect(result).toBe(null);
-        done();
+          expect(result).toBe(null);
 
-      }).catch(e => {
+        }).catch(e => {
 
-        expect(e).toBe(null);
-        done();
+          expect(e).toBe(null);
 
-      });
-    
+        });
+
     });
     testElement.querySelector('.prevent').dispatchEvent(up);
-    
+
   });
 
-  it('should delete ripple inside element onMouseOut', (done: DoneFn) => {
+  it('should delete ripple inside element onMouseOut', async () => {
     let down = new MouseEvent('mouseDown');
     let out = new MouseEvent('mouseout');
 
-    testElement.addEventListener('mouseDown', (event) => { 
+    await testElement.addEventListener('mouseDown', (event) => {
       directive.mouseDown(event);
     });
 
     testElement.dispatchEvent(down);
 
-    testElement.querySelector('.prevent').addEventListener('mouseout', (event) => {
-      directive.mouseOut(event)
-      .then( result => {
+    await testElement.querySelector('.prevent').addEventListener('mouseout', async (event) => {
+      await directive.mouseOut(event)
+        .then(result => {
 
-        expect(result).toBe(null);
-        done();
+          expect(result).toBe(null);
 
-      }).catch( e => {
+        }).catch(e => {
 
-        expect(e).toBe(null);
-        done();
+          expect(e).toBe(null);
 
-      });
+        });
     });
 
     testElement.querySelector('.prevent').dispatchEvent(out);
-    
+
   });
-  
+
 });
- 

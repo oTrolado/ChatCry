@@ -30,8 +30,10 @@ export class MainComponent implements OnInit, AfterViewInit {
     ) { }
 
   ngOnInit() {
-
-    this.user = JSON.parse(localStorage.getItem('chatCryProfile'));
+    if(localStorage.getItem('chatCryProfile'))
+      this.user = JSON.parse(localStorage.getItem('chatCryProfile'));
+    else 
+      this.router.navigate(['']);
 
     this.contacts.getContacts()
     .subscribe(
@@ -39,11 +41,17 @@ export class MainComponent implements OnInit, AfterViewInit {
         let sorted:any = res;
         this.contactList = sorted.sort((a,b) => (a.nome > b.nome) ? 1 : (a.nome < b.nome) ? -1 : 0);
       },
-      error => console.error(error)
+      error => {
+        console.error(error);
+        this.contactList = [{
+                              nome:'Error '+error.status, 
+                              ultimoAcesso: new Date(), 
+                              imagem: 'https://media.giphy.com/media/YIQG7dmoR6geY/giphy.gif'
+                            }]
+      }
     );
   
   }
-
   ngAfterViewInit() {
     this.render.setAttribute(this.avatar.nativeElement, 'src', this.user['avatar']);
   }

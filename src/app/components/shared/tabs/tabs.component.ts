@@ -9,7 +9,6 @@ import {
     Output,
     EventEmitter
 } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
     selector: 'tabs',
@@ -20,10 +19,6 @@ export class TabsComponent implements OnInit, AfterViewInit {
 
     animating: boolean = false;
     forward: boolean = false;
-
-    floatInfo: boolean = false;
-
-    openContact: Object = { nome: '', imagem: '', ultimoAcesso: '' };
 
     active: number = 0;
     headers: HTMLCollection;
@@ -38,8 +33,7 @@ export class TabsComponent implements OnInit, AfterViewInit {
     @ViewChild('menuIt') menuIt: ElementRef;
 
     constructor(
-        private render: Renderer2,
-        private sanitizer: DomSanitizer
+        private render: Renderer2
     ) { }
 
     ngOnInit() {
@@ -101,17 +95,7 @@ export class TabsComponent implements OnInit, AfterViewInit {
         }, 490);
     }
 
-    toggleInfo(container?: HTMLDivElement, index?: number): boolean {
-
-        if (!!container)
-            container.scrollTop = 0;
-
-        if (index != undefined)
-            this.openContact = this.contactList[index];
-
-        return this.floatInfo = !this.floatInfo;
-
-    }
+    
 
     translateIndicator(item: number): void {
         let itemHeight:number = this.menuIt.nativeElement.clientHeight;
@@ -120,10 +104,6 @@ export class TabsComponent implements OnInit, AfterViewInit {
 
     menutoggle(): any {
         return this.menuToggle.emit(true);
-    }
-
-    sanitizeURL(url: string): any {
-        return this.sanitizer.bypassSecurityTrustUrl(url);
     }
 
     resize() {
