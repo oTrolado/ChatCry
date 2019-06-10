@@ -11,7 +11,6 @@ import { RippleDirective } from './components/shared/ripple/ripple.directive';
 import { TalkComponent } from './components/shared/talk/talk.component';
 import { MainComponent } from './components/main/main.component';
 import { TabsComponent } from './components/shared/tabs/tabs.component';
-import { ContactsComponent } from './components/shared/tabs/contacts/contacts.component';
 
 @NgModule({
   declarations: [
@@ -21,8 +20,7 @@ import { ContactsComponent } from './components/shared/tabs/contacts/contacts.co
     RippleDirective,
     TalkComponent,
     MainComponent,
-    TabsComponent,
-    ContactsComponent
+    TabsComponent
   ],
   imports: [
     BrowserModule,

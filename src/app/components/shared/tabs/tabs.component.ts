@@ -9,6 +9,7 @@ import {
     Output,
     EventEmitter
 } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
     selector: 'tabs',
@@ -19,11 +20,13 @@ export class TabsComponent implements OnInit, AfterViewInit {
 
     animating: boolean = false;
     forward: boolean = false;
+    floatInfo: boolean = false;
 
     active: number = 0;
     headers: HTMLCollection;
     containers: HTMLCollection;
     indicator: HTMLDivElement;
+    openContact: Object = { nome: '', imagem: '', ultimoAcesso: '' };
 
     @Input() contactList: any;
     @Output() menuToggle: EventEmitter<boolean> = new EventEmitter;
@@ -33,7 +36,8 @@ export class TabsComponent implements OnInit, AfterViewInit {
     @ViewChild('menuIt') menuIt: ElementRef;
 
     constructor(
-        private render: Renderer2
+        private render: Renderer2,
+        private sanitizer: DomSanitizer
     ) { }
 
     ngOnInit() {
@@ -112,4 +116,16 @@ export class TabsComponent implements OnInit, AfterViewInit {
             this.render.setStyle(this.indicator, 'height',itemHeight + 'px');
     }
 
+    sanitizeURL(url: string): any {
+        return this.sanitizer.bypassSecurityTrustUrl(url);
+    }
+
+    toggleInfo(container?: HTMLDivElement, index?: number): boolean {
+    
+        if (index != undefined)
+            this.openContact = this.contactList[index];
+    
+        return this.floatInfo = !this.floatInfo;
+    
+    }
 }

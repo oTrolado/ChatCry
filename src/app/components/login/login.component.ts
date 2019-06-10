@@ -60,11 +60,11 @@ export class LoginComponent implements OnInit, AfterViewInit {
   }
 
   validEmail(email:string):boolean {
-    if (!/@/g.test(email)) return false;
+    if (!/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+[.]+[a-zA-Z0-9-.]+$/i.test(email)) return false;
     return true;
   }
 
-  sendMessage(message:string, self:boolean, enter?:boolean):void {
+  sendMessage(message:string, self:boolean, enter?:boolean):Object {
     if(this.inputType == 'password') 
       message = '*'.repeat(message.length);
     
@@ -76,10 +76,10 @@ export class LoginComponent implements OnInit, AfterViewInit {
     }
     if(enter) msg.enter = true;
 
-    this.newMessage = msg;
+    return this.newMessage = msg;
   }
 
-  receivedMessage(event:string): void {
+  receivedMessage(event:string):any {
     
     this.sendMessage(event,true);
 
@@ -93,7 +93,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
     }
     else if(this.listeningEmail) {
       if(this.validEmail(event)) {
-      
+        
         this.user.email = event.toLowerCase;
         this.listeningEmail = false;
         setTimeout(() => this.getUserPassword(), 1000);
@@ -119,7 +119,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
       }
       else {
         setTimeout (() => {
-          this.sendMessage('As senhas não bateram ♪ "Teeeeente outra veeeez" ♫', false)
+          this.sendMessage('As senhas não bateram ♪ "Teeeeente outra veeeez" ♫', false);
           this.inputType = 'password';
         }, 1000);
       }
@@ -128,13 +128,16 @@ export class LoginComponent implements OnInit, AfterViewInit {
       this.inputType = 'text';
       if(event == this.user.password) {
         setTimeout (() => this.login(), 1000);
+        return 'logando';
       }
       else 
         setTimeout (() => {
           this.sendMessage(this.user.name+' essa não é sua senha ¬¬', false)
           this.inputType = 'password';
         }, 1000);
+        return this.user.password;
     }
+    return event;
   }
 
   getUserName():void {
@@ -171,7 +174,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
     this.inputType = 'password';
   }
 
-  restart():void {
+  restart():object {
 
     this.user = { name: null, email: null, password: null, avatar: null };
     this.listeningEmail = false;
@@ -185,6 +188,8 @@ export class LoginComponent implements OnInit, AfterViewInit {
       setTimeout(() => this.getUserName(), 1000);
     },400)
     
+    return this.user;
+
   }
 
   uploadAvatar():void {
@@ -203,13 +208,16 @@ export class LoginComponent implements OnInit, AfterViewInit {
   
   }
 
-  confirmAvatar():void {
-    if(this.user.avatar == null) return alert('Por favor selecione uma imagem ;)');
-    setTimeout(() => {
-      this.prompContainer.nativeElement.style.display  = 'none'
-      localStorage.setItem('chatCryProfile', JSON.stringify(this.user));
-      this.loginButton();
-    }, 2000);
+  confirmAvatar():any {
+    if(this.user.avatar == null) return false;
+    return new Promise(resolve => {
+      setTimeout(() => {
+        this.prompContainer.nativeElement.style.display  = 'none'
+        localStorage.setItem('chatCryProfile', JSON.stringify(this.user));
+        this.loginButton();
+        resolve(true);
+      }, 2000);
+    });
   }
 
   loginButton():boolean {
@@ -221,11 +229,12 @@ export class LoginComponent implements OnInit, AfterViewInit {
     return false
   } 
 
-  forget():void {
+  forget():any {
     this.user = {}
     localStorage.removeItem('chatCryProfile');
     this.inputType = 'text';
     this.getUserName();
+    return localStorage.getItem('chatCryProfile');
   }
 
   login():void { 
