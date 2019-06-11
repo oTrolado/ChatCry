@@ -17,23 +17,23 @@ describe('RippleDirective', () => {
   let elementRef = new ElementRef(testElement);
 
   class Teste extends Renderer2 {
-
-    createComment = () => { }
-    createText = () => { }
-    data = () => { }
-    destroy = () => { }
-    insertBefore = () => { }
     listen;
-    nextSibling = () => { }
-    parentNode = () => { }
-    removeAttribute = () => { }
-    removeChild = () => { }
-    removeClass = () => { }
-    removeStyle = () => { }
-    selectRootElement = () => { }
-    setAttribute = () => { }
-    setProperty = () => { }
-    setValue = () => { }
+
+    createComment = () => { };
+    createText = () => { };
+    data = () => { };
+    destroy = () => { };
+    insertBefore = () => { };
+    nextSibling = () => { };
+    parentNode = () => { };
+    removeAttribute = () => { };
+    removeChild = () => { };
+    removeClass = () => { };
+    removeStyle = () => { };
+    selectRootElement = () => { };
+    setAttribute = () => { };
+    setProperty = () => { };
+    setValue = () => { };
 
     addClass = (elm: HTMLElement, cls: string) => {
 
@@ -62,10 +62,10 @@ describe('RippleDirective', () => {
 
 
 
-  let rmock = new Teste();
+  const rmock = new Teste();
 
 
-  let directive = new RippleDirective(elementRef,rmock);
+  let directive = new RippleDirective(elementRef, rmock);
 
 
 
@@ -76,7 +76,7 @@ describe('RippleDirective', () => {
 
     testElement.style.height = '90px';
 
-    let rmock = new Teste();
+    const rmock = new Teste();
   });
 
 
@@ -106,7 +106,7 @@ describe('RippleDirective', () => {
   });
 
   it('should create ripple inside element', () => {
-    let e = new MouseEvent('mouseDown');
+    const e = new MouseEvent('mouseDown');
 
     testElement.addEventListener('mouseDown', (event) => {
       directive.mouseDown(event);
@@ -119,8 +119,8 @@ describe('RippleDirective', () => {
   });
 
   it('should delete ripple inside element onMouseUp', async () => {
-    let down = new MouseEvent('mouseDown');
-    let up = new MouseEvent('mouseup');
+    const down = new MouseEvent('mouseDown');
+    const up = new MouseEvent('mouseup');
 
     testElement.addEventListener('mouseDown', (event) => {
       directive.mouseDown(event);
@@ -146,8 +146,8 @@ describe('RippleDirective', () => {
   });
 
   it('should delete ripple inside element onMouseOut', async () => {
-    let down = new MouseEvent('mouseDown');
-    let out = new MouseEvent('mouseout');
+    const down = new MouseEvent('mouseDown');
+    const out = new MouseEvent('mouseout');
 
     await testElement.addEventListener('mouseDown', (event) => {
       directive.mouseDown(event);

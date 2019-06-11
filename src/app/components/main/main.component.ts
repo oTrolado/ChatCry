@@ -1,7 +1,7 @@
-import { Component, 
-          OnInit,  
-          AfterViewInit, 
-          ViewChild, 
+import { Component,
+          OnInit,
+          AfterViewInit,
+          ViewChild,
           ElementRef,
           Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
@@ -15,65 +15,66 @@ import { ContactsService } from '../../services/contacts.service';
 })
 export class MainComponent implements OnInit, AfterViewInit {
 
-  user:Object;
-  newMessage:Object;
-  contactList:any;
+  user: Object;
+  newMessage: Object;
+  contactList: any;
 
-  @ViewChild('selfAvatar') avatar:ElementRef;
+  @ViewChild('selfAvatar') avatar: ElementRef;
 
-  hideMenu:boolean = false;
+  hideMenu = false;
 
   constructor(
-    private render:Renderer2,
-    private router:Router,
-    private contacts:ContactsService
+    private render: Renderer2,
+    private router: Router,
+    private contacts: ContactsService
     ) { }
 
   ngOnInit() {
-    if(localStorage.getItem('chatCryProfile'))
+    if (localStorage.getItem('chatCryProfile')) {
       this.user = JSON.parse(localStorage.getItem('chatCryProfile'));
-    else 
+    } else {
       this.router.navigate(['']);
+    }
 
     this.contacts.getContacts()
     .subscribe(
       res => {
-        let sorted:any = res;
-        this.contactList = sorted.sort((a,b) => (a.nome > b.nome) ? 1 : (a.nome < b.nome) ? -1 : 0);
+        const sorted: any = res;
+        this.contactList = sorted.sort((a, b) => (a.nome > b.nome) ? 1 : (a.nome < b.nome) ? -1 : 0);
       },
       error => {
         console.error(error);
         this.contactList = [{
-                              nome:'Error '+error.status, 
-                              ultimoAcesso: new Date(), 
+                              nome: 'Error ' + error.status,
+                              ultimoAcesso: new Date(),
                               imagem: 'https://media.giphy.com/media/YIQG7dmoR6geY/giphy.gif'
-                            }]
+                            }];
       }
     );
-  
+
   }
   ngAfterViewInit() {
     this.render.setAttribute(this.avatar.nativeElement, 'src', this.user['avatar']);
   }
 
-  receivedMessage(event):void {
+  receivedMessage(event): void {
     this.sendMessage(event, true);
   }
 
-  sendMessage(message, self):void {
+  sendMessage(message, self): void {
     this.newMessage = {
       content: message,
-      self: self,
+      self,
       url: this.user['avatar'],
       enter: false
-    }
+    };
   }
 
-  quit():void {
+  quit(): void {
     setTimeout(() => {
       this.user['auth'] = false;
       localStorage.setItem('chatCryProfile', JSON.stringify(this.user));
-      this.router.navigate(['']);  
+      this.router.navigate(['']);
     }, 400);
   }
 
@@ -81,8 +82,9 @@ export class MainComponent implements OnInit, AfterViewInit {
     this.hideMenu = event;
   }
 
-  resize():void {
-    if(window.innerWidth > 800) 
+  resize(): void {
+    if (window.innerWidth > 800) {
       this.menuToggle(false);
+    }
   }
 }

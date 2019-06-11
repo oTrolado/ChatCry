@@ -18,11 +18,14 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class TabsComponent implements OnInit, AfterViewInit {
 
-    animating: boolean = false;
-    forward: boolean = false;
-    floatInfo: boolean = false;
+    animating = false;
+    forward = false;
+    floatInfo = false;
 
-    active: number = 0;
+    active = 0;
+
+    filter: string;
+
     headers: HTMLCollection;
     containers: HTMLCollection;
     indicator: HTMLDivElement;
@@ -46,12 +49,13 @@ export class TabsComponent implements OnInit, AfterViewInit {
     ngAfterViewInit() {
 
         this.containers = this.container.nativeElement.querySelectorAll('.tab-content');
-        for (let i = 1; i < this.containers.length; i++)
+        for (let i = 1; i < this.containers.length; i++) {
             this.render.setStyle(this.containers[i], 'display', 'none');
+        }
 
         this.headers = this.header.nativeElement.querySelectorAll('.menuItem');
 
-        let indicatorContainer = this.header.nativeElement.querySelector('#indicator-wrapper');
+        const indicatorContainer = this.header.nativeElement.querySelector('#indicator-wrapper');
 
         this.render.setStyle(indicatorContainer, 'height', this.header.nativeElement.clientHeight + 'px');
 
@@ -62,8 +66,9 @@ export class TabsComponent implements OnInit, AfterViewInit {
 
 
     mouseover(item): void {
-        if (item == this.active)
+        if (item == this.active) {
             this.render.setStyle(this.indicator, 'boxShadow', 'white 1px 0px 9px 3px');
+        }
     }
 
     mouseout(): void {
@@ -71,7 +76,7 @@ export class TabsComponent implements OnInit, AfterViewInit {
     }
 
     select(item): boolean {
-        if (item == this.active || this.animating) return false;
+        if (item == this.active || this.animating) { return false; }
 
         this.translateIndicator(item);
         this.changeContent(item);
@@ -82,15 +87,16 @@ export class TabsComponent implements OnInit, AfterViewInit {
 
         this.animating = true;
 
-        let actual = this.container.nativeElement.children[this.active];
-        let newContent = this.container.nativeElement.children[content];
+        const actual = this.container.nativeElement.children[this.active];
+        const newContent = this.container.nativeElement.children[content];
 
         this.render.setStyle(newContent, 'display', 'flex');
 
-        if (content > this.active)
+        if (content > this.active) {
             this.forward = true;
-        else
+        } else {
             this.forward = false;
+        }
 
         setTimeout(() => {
             this.active = content;
@@ -99,10 +105,10 @@ export class TabsComponent implements OnInit, AfterViewInit {
         }, 490);
     }
 
-    
+
 
     translateIndicator(item: number): void {
-        let itemHeight:number = this.menuIt.nativeElement.clientHeight;
+        const itemHeight: number = this.menuIt.nativeElement.clientHeight;
         this.render.setStyle(this.indicator, 'transform', 'translateY(' + (itemHeight * item) + 'px)');
     }
 
@@ -111,21 +117,25 @@ export class TabsComponent implements OnInit, AfterViewInit {
     }
 
     resize() {
-        let itemHeight:number = this.menuIt.nativeElement.clientHeight;
-        if(window.innerWidth < 480)
-            this.render.setStyle(this.indicator, 'height',itemHeight + 'px');
+        const itemHeight: number = this.menuIt.nativeElement.clientHeight;
+        if (window.innerWidth < 480) {
+            this.render.setStyle(this.indicator, 'height', itemHeight + 'px');
+        }
     }
 
     sanitizeURL(url: string): any {
         return this.sanitizer.bypassSecurityTrustUrl(url);
     }
 
-    toggleInfo(container?: HTMLDivElement, index?: number): boolean {
-    
-        if (index != undefined)
-            this.openContact = this.contactList[index];
-    
-        return this.floatInfo = !this.floatInfo;
-    
+    toggleInfo(element?: object): Promise<boolean> {
+        if (!!element) 
+            this.openContact = element;
+        return new Promise(resolve => {
+            setTimeout(() => resolve(this.floatInfo = !this.floatInfo), 200);
+        }); 
+    }
+
+    clearFilter():any {
+        return this.filter = null;
     }
 }

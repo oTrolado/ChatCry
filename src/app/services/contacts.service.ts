@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class ContactsService {
 
-  constructor(private http:HttpClient) { }
+  constructor(private http: HttpClient) { }
 
   getContacts() {
     return this.http.get('http://demo4084944.mockable.io/contacts');

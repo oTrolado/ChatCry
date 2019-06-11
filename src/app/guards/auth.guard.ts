@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, 
-          ActivatedRouteSnapshot, 
-          RouterStateSnapshot, 
+import { CanActivate,
+          ActivatedRouteSnapshot,
+          RouterStateSnapshot,
           Router  } from '@angular/router';
 
 @Injectable({
@@ -10,18 +10,18 @@ import { CanActivate,
 export class AuthGuard implements CanActivate {
 
   constructor(
-    private router:Router
+    private router: Router
   ) { }
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ):boolean {
+  ): boolean {
 
-    if(localStorage.getItem('chatCryProfile')) {
-      let user = JSON.parse(localStorage.getItem('chatCryProfile'));
-      
-      if(user.auth) return true; 
+    if (localStorage.getItem('chatCryProfile')) {
+      const user = JSON.parse(localStorage.getItem('chatCryProfile'));
+
+      if (user.auth) { return true; }
     }
     this.router.navigate(['']);
     return false;

@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -11,6 +12,7 @@ import { RippleDirective } from './components/shared/ripple/ripple.directive';
 import { TalkComponent } from './components/shared/talk/talk.component';
 import { MainComponent } from './components/main/main.component';
 import { TabsComponent } from './components/shared/tabs/tabs.component';
+import { FilterContactsPipe } from './components/shared/filter-contacts.pipe';
 
 @NgModule({
   declarations: [
@@ -20,12 +22,14 @@ import { TabsComponent } from './components/shared/tabs/tabs.component';
     RippleDirective,
     TalkComponent,
     MainComponent,
-    TabsComponent
+    TabsComponent,
+    FilterContactsPipe
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

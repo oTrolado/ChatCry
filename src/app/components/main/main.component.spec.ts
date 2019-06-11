@@ -1,12 +1,14 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+
 import { TabsComponent } from '../shared/tabs/tabs.component';
 import { TalkComponent } from '../shared/talk/talk.component';
 import { TypeBarComponent } from '../shared/type-bar/type-bar.component';
-import { ContactsComponent } from '../shared/tabs/contacts/contacts.component';
 import { MainComponent } from './main.component';
-import { HttpClientModule } from '@angular/common/http';
-import { HttpClient } from '@angular/common/http';
+import { FilterContactsPipe } from '../shared/filter-contacts.pipe';
 
 
 describe('MainComponent', () => {
@@ -19,8 +21,8 @@ describe('MainComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ RouterTestingModule, HttpClientModule ],
-      declarations: [ MainComponent, TabsComponent, TalkComponent, TypeBarComponent, ContactsComponent ],
+      imports: [ RouterTestingModule, HttpClientModule, FormsModule ],
+      declarations: [ MainComponent, TabsComponent, TalkComponent, TypeBarComponent, FilterContactsPipe ],
       providers: [HttpClient]
     })
     .compileComponents();

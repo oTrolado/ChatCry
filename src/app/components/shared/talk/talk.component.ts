@@ -1,9 +1,9 @@
-import { Component, 
-          OnInit, 
-          Input, 
-          OnChanges, 
-          ViewChild, 
-          ElementRef, 
+import { Component,
+          OnInit,
+          Input,
+          OnChanges,
+          ViewChild,
+          ElementRef,
           Output,
           EventEmitter} from '@angular/core';
 
@@ -17,12 +17,12 @@ import { Component,
 
 export class TalkComponent implements OnInit, OnChanges {
 
-  previus:boolean = true;
+  previus = true;
 
   @Input() message: any;
   @Input() messages: Array<Object> = [];
-  @Output() loginEvent:EventEmitter<boolean> = new EventEmitter;
-  @ViewChild('container') container:ElementRef;
+  @Output() loginEvent: EventEmitter<boolean> = new EventEmitter;
+  @ViewChild('container') container: ElementRef;
 
   constructor() { }
 
@@ -30,28 +30,29 @@ export class TalkComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    if(!!this.message)
+    if (!!this.message) {
       this.messages.push(this.message);
-    
+    }
+
     setTimeout(() => {
       this.container.nativeElement.scrollTop =
       this.container.nativeElement.scrollHeight;
     }, 10);
   }
 
-  avatar(i):boolean {
-    if(!this.messages[i]['self']){
+  avatar(i): boolean {
+    if (!this.messages[i]['self']) {
 
-      if(!!this.messages[i-1]) {
-        if(this.messages[i-1]['self'] != this.messages[i]['self']) return true;
-      }
-      else return true;
+      if (!!this.messages[i - 1]) {
+        if (this.messages[i - 1]['self'] != this.messages[i]['self']) { return true; }
+      } else { return true; }
     }
     return false;
   }
 
-  login():void {
-    if(localStorage.getItem('chatCryProfile'))
+  login(): void {
+    if (localStorage.getItem('chatCryProfile')) {
       this.loginEvent.emit(true);
+    }
   }
 }

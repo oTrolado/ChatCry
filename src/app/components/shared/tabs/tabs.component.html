@@ -42,26 +42,17 @@
 
     <div class="tab-content">
       
-      <div class="searchBox">
-        <i class="material-icons" ripple>
-          search
-        </i>
-        <input type="text" placeholder="Pesquisar" class="typo-caption">
-      </div>
+    <ng-container *ngTemplateOutlet="searchBox"></ng-container>
 
     </div>
     <div class="tab-content" [ngStyle]="{'overflow-y' : floatInfo ? 'hidden' : 'auto'}" #contactContainer>
-      <div class="searchBox">
-        <i class="material-icons" ripple>
-          search
-        </i>
-        <input type="text" placeholder="Pesquisar" class="typo-caption">
-      </div>
+
+      <ng-container *ngTemplateOutlet="searchBox"></ng-container>
 
       <div class="contactList">
         <h3 class="typo-subtitle1">Contatos</h3>
-        <ng-container *ngFor="let contact of contactList; index as i">
-          <div class="contact" (click)="toggleInfo(contactContainer, i)" ripple>
+        <ng-container *ngFor="let contact of contactList | filterContacts: filter ; index as i">
+          <div class="contact" (click)="toggleInfo(contact)" ripple>
             <img [src]="contact.imagem" alt="Avatar" class="contactAvatar avatar raized">
             <span class="typo-h6">{{contact.nome}}</span>
           </div>
@@ -73,8 +64,22 @@
       
     </div>
     <div class="tab-content">
-      Content 3
+
+      <ng-container *ngTemplateOutlet="searchBox"></ng-container>
+    
     </div>
+
+    <ng-template #searchBox>
+      <div class="searchBox">
+        <i class="material-icons" ripple>
+          search
+        </i>
+        <input type="text" placeholder="Pesquisar" class="typo-caption" [(ngModel)]="filter">
+        <i class="material-icons" ripple (click)="clearFilter()">
+          close
+        </i>
+      </div>
+    </ng-template>
     
   </section>
   <div class="floatInfo raized" [ngStyle]="{'transform' : floatInfo ? 'translateX(0%)' : 'translateX(-100%)'}">
