@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit {
   }
 
   validEmail(email: string): boolean {
-    if (!/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+[.]+[a-zA-Z0-9-.]+$/i.test(email)) { return false; }
+    if (!/^[a-z\d\S._-]+@+[a-z\d\S._-]+.+[a-z\S]$/gi.test(email)) { return false; }
     return true;
   }
 
@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit {
 
     const msg = {
       content: message,
-      self,
+      self: self,
       url: 'assets/bot.png',
       enter: false
     };

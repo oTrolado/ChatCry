@@ -87,4 +87,21 @@ export class MainComponent implements OnInit, AfterViewInit {
       this.menuToggle(false);
     }
   }
+
+  chatWith(contact): any {
+    let talk: Array<any> = [];
+
+    if(localStorage.getItem('chatCry' + contact.nome))
+      talk = JSON.parse(localStorage.getItem('chatCry' + contact.nome)).talk;
+
+    if(!!contact.mensagem)
+      talk.push( {
+        content: contact.message,
+        self: false,
+        url: contact.imagem,
+        enter: false
+      });
+
+    return talk;
+  }
 }

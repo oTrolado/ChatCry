@@ -40,11 +40,13 @@
                                             'anamitaion-backward': animating && !forward
                                           }" #container>
 
-    <div class="tab-content">
-      
-    <ng-container *ngTemplateOutlet="searchBox"></ng-container>
+    <div class="tab-content" #chatsContainer>
+
+      <ng-container *ngTemplateOutlet="searchBox"></ng-container>
+      <chats [chatList]='chatList' [filter]="filter" (toggleInfo)="toggleInfo($event)" (chat)="chatWith($event)"></chats>
 
     </div>
+
     <div class="tab-content" [ngStyle]="{'overflow-y' : floatInfo ? 'hidden' : 'auto'}" #contactContainer>
 
       <ng-container *ngTemplateOutlet="searchBox"></ng-container>
@@ -52,13 +54,11 @@
       <div class="contactList">
         <h3 class="typo-subtitle1">Contatos</h3>
         <ng-container *ngFor="let contact of contactList | filterContacts: filter ; index as i">
-          <div class="contact" (click)="toggleInfo(contact)" ripple>
-            <img [src]="contact.imagem" alt="Avatar" class="contactAvatar avatar raized">
+          <div class="contact" (click)="chatStart(contact)" ripple>
+            <img [src]="contact.imagem" alt="Avatar" class="contactAvatar avatar raized" (click)="toggleInfo(contact, $event)" ripple>
             <span class="typo-h6">{{contact.nome}}</span>
           </div>
         </ng-container>
-
-
       </div>
 
       

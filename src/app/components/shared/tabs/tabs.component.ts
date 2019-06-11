@@ -10,6 +10,7 @@ import {
     EventEmitter
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { promise } from 'protractor';
 
 @Component({
     selector: 'tabs',
@@ -25,6 +26,7 @@ export class TabsComponent implements OnInit, AfterViewInit {
     active = 0;
 
     filter: string;
+    chatList: Array<any> = [];
 
     headers: HTMLCollection;
     containers: HTMLCollection;
@@ -33,6 +35,7 @@ export class TabsComponent implements OnInit, AfterViewInit {
 
     @Input() contactList: any;
     @Output() menuToggle: EventEmitter<boolean> = new EventEmitter;
+    @Output() chat: EventEmitter<any> = new EventEmitter;
 
     @ViewChild('header') header: ElementRef;
     @ViewChild('container') container: ElementRef;
@@ -61,9 +64,12 @@ export class TabsComponent implements OnInit, AfterViewInit {
 
         this.indicator = this.header.nativeElement.querySelector('#indicator');
 
+        setTimeout( () => {
+            this.chatList = this.contactList.filter( contato => contato['mensagem']);
+        }, 650);
+        
         this.resize();
     }
-
 
     mouseover(item): void {
         if (item == this.active) {
@@ -75,15 +81,14 @@ export class TabsComponent implements OnInit, AfterViewInit {
         this.render.setStyle(this.indicator, 'boxShadow', 'white 1px 0px 9px 1px');
     }
 
-    select(item): boolean {
-        if (item == this.active || this.animating) { return false; }
+    select(item): Promise<any> {
+        if (item === this.active || this.animating) { return new Promise(res => res(0))}
 
         this.translateIndicator(item);
-        this.changeContent(item);
-        return true;
+        return this.changeContent(item);
     }
 
-    changeContent(content: number): any {
+    changeContent(content: number): Promise<any> {
 
         this.animating = true;
 
@@ -98,11 +103,15 @@ export class TabsComponent implements OnInit, AfterViewInit {
             this.forward = false;
         }
 
-        setTimeout(() => {
-            this.active = content;
-            this.animating = false;
-            this.render.setStyle(actual, 'display', 'none');
-        }, 490);
+        return new Promise( resolve => {
+            setTimeout(() => {
+                this.active = content;
+                this.animating = false;
+                this.render.setStyle(actual, 'display', 'none');
+                resolve(this.active);
+            }, 490);
+        });
+        
     }
 
 
@@ -127,15 +136,29 @@ export class TabsComponent implements OnInit, AfterViewInit {
         return this.sanitizer.bypassSecurityTrustUrl(url);
     }
 
-    toggleInfo(element?: object): Promise<boolean> {
+    toggleInfo(element?: object, event?: Event): Promise<boolean> {        
         if (!!element) 
             this.openContact = element;
+        if(event)
+            event.stopImmediatePropagation();
+        
         return new Promise(resolve => {
             setTimeout(() => resolve(this.floatInfo = !this.floatInfo), 200);
         }); 
     }
 
     clearFilter():any {
-        return this.filter = null;
+        this.filter = null;
+        return this.filter;
+    }
+
+    chatStart(contact: any): Promise<any> {
+        this.chatList.push(contact);
+        this.chatWith(contact);
+        return this.select(0);
+    }
+
+    chatWith(contact) {
+        this.chat.emit(contact);
     }
 }

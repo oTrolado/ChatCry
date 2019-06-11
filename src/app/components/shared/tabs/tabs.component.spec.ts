@@ -2,7 +2,9 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 
 import { TabsComponent } from './tabs.component';
-import { FilterContactsPipe } from '../filter-contacts.pipe';
+import { FilterContactsPipe } from '../pipes/filter-contacts.pipe';
+import { UrlPipePipe } from '../pipes/url-pipe.pipe';
+import { ChatsComponent } from './chats/chats.component';
 
 describe('TabsComponent', () => {
   let component: TabsComponent;
@@ -14,7 +16,12 @@ describe('TabsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TabsComponent, FilterContactsPipe ],
+      declarations: [ 
+        TabsComponent, 
+        FilterContactsPipe, 
+        ChatsComponent, 
+        UrlPipePipe 
+      ],
       imports: [FormsModule]
     })
     .compileComponents();
@@ -43,7 +50,15 @@ describe('TabsComponent', () => {
   });
 
   it('Teste se o filtro será limpo', () => {
-    component.filter = 'Adrian';
+    component.filter = 'ass';
     expect(component.clearFilter()).toBeNull();
   });
+
+  it('Teste do select "conversas" quando iniciado novo chat', () => {
+    component.active = 2;
+    component.chatStart(contatoMock)
+    .then(res => expect(res).toEqual(0))
+    .catch(e => expect(e).toBe(0));
+  });
+  
 });
