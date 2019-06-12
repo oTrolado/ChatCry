@@ -152,15 +152,14 @@ export class TabsComponent implements OnInit, AfterViewInit {
         return this.filter;
     }
 
-    chatStart(contact: any): Promise<any> {
+    chatStart(contact: any): number {
         this.chatList.push(contact);
         this.chatWith(contact);
-        return new Promise(res => {
-            setTimeout(() => res(this.active), 600);
-        });
+        return  0;
     }
 
     chatWith(contact) {
         this.chat.emit(contact);
     }
+
 }

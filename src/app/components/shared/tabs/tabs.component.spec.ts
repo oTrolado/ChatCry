@@ -55,10 +55,7 @@ describe('TabsComponent', () => {
   });
 
   it('Teste do select "conversas" quando iniciado novo chat', () => {
-    component.active = 2;
-    component.chatStart(contatoMock)
-    .then(res => expect(res).toEqual(0))
-    .catch(e => expect(e).toBe(0));
+    expect(component.chatStart(contatoMock)).toBe(0);
   });
   
 });
