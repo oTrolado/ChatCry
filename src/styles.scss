@@ -9,6 +9,8 @@
 
 .raized { box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16); }
 
+div .active {background-color: $secondary; color: $light-text;}
+
 /*BUTTONS */
 .warn { color: $warn; }
 

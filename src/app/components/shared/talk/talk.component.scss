@@ -10,7 +10,8 @@
     padding: 14px;
     color: $light-text;
     display: inline-flex;
-    word-break: break-all;    
+    white-space: pre-wrap;
+    word-break: break-word;    
 }
 .dialoge P { margin: auto; }
 

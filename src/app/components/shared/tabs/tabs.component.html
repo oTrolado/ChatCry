@@ -43,7 +43,7 @@
     <div class="tab-content" #chatsContainer>
 
       <ng-container *ngTemplateOutlet="searchBox"></ng-container>
-      <chats [chatList]='chatList' [filter]="filter" (toggleInfo)="toggleInfo($event)" (chat)="chatWith($event)"></chats>
+      <chats [chatList]='chatList' [filter]="filter" [activeChat]='activeChat' (toggleInfo)="toggleInfo($event)" (chat)="chatWith($event)"></chats>
 
     </div>
 
@@ -87,7 +87,7 @@
       close
     </i>
 
-    <img [src]="sanitizeURL(openContact['imagem'])" alt="avatar" class="BigAvatar raized">
+    <img [src]="openContact['imagem'] | urlPipe" alt="avatar" class="BigAvatar raized">
     <h2 class="typo-h4">{{openContact["nome"]}}</h2>
     <h4 class="typo-subtitle2">Ultimo acesso: {{openContact["ultimoAcesso"] | date:'short' }}</h4>
   </div>

@@ -15,6 +15,7 @@ export class ChatsComponent implements OnInit {
   
   @Input() filter: string;
   @Input() chatList: Array<any> = null;
+  @Input() activeChat: string;
   @Output() toggleInfo: EventEmitter<any> = new EventEmitter();
   @Output() chat: EventEmitter<any> = new EventEmitter();
 

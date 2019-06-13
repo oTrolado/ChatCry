@@ -18,6 +18,7 @@ import { Component,
 export class TalkComponent implements OnInit, OnChanges {
 
   previus = true;
+  lastMessage: any = {};
 
   @Input() message: any;
   @Input() messages: Array<Object> = [];
@@ -30,10 +31,12 @@ export class TalkComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    if (!!this.message) {
-      this.messages.push(this.message);
-    }
-
+    if (!!this.message) 
+      if(this.message != this.lastMessage) {
+        this.messages.push(this.message);
+        this.lastMessage = this.message;
+      }
+        
     setTimeout(() => {
       this.container.nativeElement.scrollTop =
       this.container.nativeElement.scrollHeight;

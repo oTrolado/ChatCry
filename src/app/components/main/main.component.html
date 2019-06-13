@@ -11,7 +11,7 @@
     </div>
 
     <div class="tabs-inner">
-      <tabs [contactList]='contactList' (menuToggle)="menuToggle($event)" (chat)="chatWith($event)"></tabs>
+      <tabs [contactList]='contactList' (menuToggle)="menuToggle($event)" (chat)="startChat($event)"></tabs>
     </div>
   </div>
   <section id="chat-container">
@@ -23,7 +23,7 @@
       </i>
 
     </div>
-    <talk [message]='newMessage'></talk>
+    <talk [message]='newMessage' [messages]='newChat'></talk>
     <type-bar  (message)='receivedMessage($event)'></type-bar>
   </section>
 

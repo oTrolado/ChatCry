@@ -1,7 +1,7 @@
 <div class="contactList">
     <h3 class="typo-subtitle1">Conversas</h3>
     <ng-container *ngFor="let chat of chatList | filterContacts: filter ; index as i">
-      <div class="contact" (click)="startChat(chat)" ripple>
+      <div class="contact" [ngClass]="{active: activeChat === chat.nome}" (click)="startChat(chat)" ripple>
         <img [src]="chat.imagem | urlPipe" alt="Avatar" class="chatAvatar avatar raized" (click)="emitInfo(chat, $event)" ripple>
         <span>
             <div class="typo-h6">{{chat.nome}}</div>

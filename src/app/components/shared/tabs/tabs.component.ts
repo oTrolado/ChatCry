@@ -9,8 +9,6 @@ import {
     Output,
     EventEmitter
 } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
-import { promise } from 'protractor';
 
 @Component({
     selector: 'tabs',
@@ -27,6 +25,7 @@ export class TabsComponent implements OnInit, AfterViewInit {
 
     filter: string;
     chatList: Array<any> = [];
+    activeChat: string;
 
     headers: HTMLCollection;
     containers: HTMLCollection;
@@ -42,8 +41,7 @@ export class TabsComponent implements OnInit, AfterViewInit {
     @ViewChild('menuIt') menuIt: ElementRef;
 
     constructor(
-        private render: Renderer2,
-        private sanitizer: DomSanitizer
+        private render: Renderer2
     ) { }
 
     ngOnInit() {
@@ -64,11 +62,25 @@ export class TabsComponent implements OnInit, AfterViewInit {
 
         this.indicator = this.header.nativeElement.querySelector('#indicator');
 
-        setTimeout( () => {
-            this.chatList = this.contactList.filter( contato => contato['mensagem']);
-        }, 650);
-        
+        this.fillMessages(this.contactList);
+
         this.resize();
+    }
+
+    fillMessages(list) {
+        if(!list)
+            setTimeout(() => this.fillMessages(this.contactList), 50);
+        else{
+            this.chatList = list.filter(contato => contato.mensagem);
+            this.contactList.map( contact => {
+                if(!this.alreadyOpen(contact) && localStorage.getItem('chatCry'+contact.nome))
+                    this.chatList.push(contact)                
+                
+            });
+            if(this.chatList.length > 0)
+                this.chatWith(this.chatList[0]);
+        }
+        return this.contactList;
     }
 
     mouseover(item): void {
@@ -122,7 +134,8 @@ export class TabsComponent implements OnInit, AfterViewInit {
     }
 
     menutoggle(): any {
-        return this.menuToggle.emit(true);
+        if(window.innerWidth < 800 )        
+            return this.menuToggle.emit(true);
     }
 
     resize() {
@@ -132,10 +145,6 @@ export class TabsComponent implements OnInit, AfterViewInit {
         }
     }
 
-    sanitizeURL(url: string): any {
-        return this.sanitizer.bypassSecurityTrustUrl(url);
-    }
-
     toggleInfo(element?: object, event?: Event): Promise<boolean> {        
         if (!!element) 
             this.openContact = element;
@@ -143,7 +152,10 @@ export class TabsComponent implements OnInit, AfterViewInit {
             event.stopImmediatePropagation();
         
         return new Promise(resolve => {
-            setTimeout(() => resolve(this.floatInfo = !this.floatInfo), 200);
+            setTimeout(() => { 
+                this.floatInfo = !this.floatInfo;
+                setInterval(() =>  resolve(this.floatInfo), 100);
+            }, 200);
         }); 
     }
 
@@ -152,14 +164,23 @@ export class TabsComponent implements OnInit, AfterViewInit {
         return this.filter;
     }
 
-    chatStart(contact: any): number {
+    chatStart(contact: any) {
+        this.select(0);
+        if(this.alreadyOpen(contact)) return 'already open'
         this.chatList.push(contact);
         this.chatWith(contact);
-        return  0;
     }
 
     chatWith(contact) {
+        this.activeChat = contact.nome;
         this.chat.emit(contact);
+        this.menutoggle();
+    }
+
+    alreadyOpen(contact): boolean {
+        let chatsFiltred = this.chatList.filter( chat => chat.nome === contact.nome);
+        if(chatsFiltred.length > 0) return true;
+        else return false;
     }
 
 }

@@ -11,7 +11,10 @@ describe('TabsComponent', () => {
   let fixture: ComponentFixture<TabsComponent>;
 
   let contatoMock: object = {
-    imagem:'teste', nome:'Testildo Matanildo', ultimoAcesso: new Date(), 
+    imagem:'teste', nome:'Testildo Matanildo', ultimoAcesso: new Date(), mensagem:'Ola joe'
+  }
+  let contatoMock2: object = {
+    imagem:'teste', nome:'Mario Noitildo', ultimoAcesso: new Date(), mensagem:'Ola joe'
   }
 
   beforeEach(async(() => {
@@ -37,14 +40,14 @@ describe('TabsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('Teste do card de informações de contato', () => {
+  it('Teste do card de informações de contato', async () => {
     component.floatInfo = true;
     
-    component.toggleInfo()
+    await component.toggleInfo()
     .then(floatInfo => expect(floatInfo).toBe(false));
 
-    component.toggleInfo(contatoMock)
-    .then(floatInfo => expect(floatInfo).toBe(false));
+    await component.toggleInfo(contatoMock)
+    .then(floatInfo => expect(floatInfo).toBe(true));
 
     expect(component.openContact).toEqual(contatoMock);
   });
@@ -54,8 +57,18 @@ describe('TabsComponent', () => {
     expect(component.clearFilter()).toBeNull();
   });
 
-  it('Teste do select "conversas" quando iniciado novo chat', () => {
-    expect(component.chatStart(contatoMock)).toBe(0);
+  it('Teste do filtro de contatos com mensagem', async () => {
+
+    expect(component.chatList).toEqual([]);
+    component.contactList = [contatoMock];
+    await setTimeout(() => expect(component.chatList).toEqual([contatoMock]),600);
+
+  });
+
+  it('Teste do filtro se contato já esta na lista de chats', () => {
+    component.chatList = [contatoMock];
+    expect(component.alreadyOpen(contatoMock)).toBe(true);
+    expect(component.alreadyOpen(contatoMock2)).toBe(false);
   });
   
 });
