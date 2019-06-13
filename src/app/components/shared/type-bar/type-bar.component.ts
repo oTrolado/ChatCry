@@ -49,6 +49,7 @@ export class TypeBarComponent implements OnInit, OnChanges {
     }
 
     if (this.textarea) { this.textarea.nativeElement.focus(); }
+    if (this.input) { this.input.nativeElement.focus(); }
   }
 
 }
