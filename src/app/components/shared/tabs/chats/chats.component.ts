@@ -17,6 +17,7 @@ export class ChatsComponent implements OnInit {
   @Input() chatList: Array<any> = null;
   @Input() activeChat: string;
   @Output() toggleInfo: EventEmitter<any> = new EventEmitter();
+  @Output() toggleContactInfo: EventEmitter<any> = new EventEmitter();
   @Output() chat: EventEmitter<any> = new EventEmitter();
 
   constructor() { }
@@ -27,6 +28,7 @@ export class ChatsComponent implements OnInit {
   emitInfo(contact, event?: Event): any {
     if(!!event) 
       event.stopImmediatePropagation();
+    
     this.toggleInfo.emit(contact);
     return contact; 
   }

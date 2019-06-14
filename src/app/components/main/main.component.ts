@@ -9,6 +9,7 @@ import {
 import { Router } from '@angular/router';
 
 import { ContactsService } from '../../services/contacts.service';
+import { GroupService } from '../../services/group.service';
 
 @Component({
   selector: 'app-main',
@@ -19,7 +20,10 @@ export class MainComponent implements OnInit, AfterViewInit {
 
   user: Object;
   newMessage: Object;
+  
   contactList: any;
+  groupList: any = [];
+  
   newChat: Array<any> = [];
   lastTalk: any = { nome: '' };
 
@@ -30,7 +34,8 @@ export class MainComponent implements OnInit, AfterViewInit {
   constructor(
     private render: Renderer2,
     private router: Router,
-    private contacts: ContactsService
+    private contacts: ContactsService,
+    private groupS: GroupService
   ) { }
 
   ngOnInit() {
@@ -55,6 +60,15 @@ export class MainComponent implements OnInit, AfterViewInit {
           }];
         }
       );
+
+    this.groupS.getGroups()
+        .subscribe(
+          res => {
+            const sorted: any = res;
+            this.groupList = sorted.sort((a, b) => (a.nome > b.nome) ? 1 : (a.nome < b.nome) ? -1 : 0);
+          },
+          error => console.error(error)
+        );
 
   }
   ngAfterViewInit() {
@@ -122,7 +136,6 @@ export class MainComponent implements OnInit, AfterViewInit {
     if (localStorage.getItem('chatCry' + contact.nome))
       talk = JSON.parse(localStorage.getItem('chatCry' + contact.nome)).talk;
 
-    if (!!contact.mensagem) {
       let check = true;
       let lastMessageContact = Array.from(talk);
       lastMessageContact = lastMessageContact.reverse().filter(message => {
@@ -131,6 +144,8 @@ export class MainComponent implements OnInit, AfterViewInit {
           return message;
         }
       });
+
+    if (!!contact.mensagem) {
 
       const message = {
         content: contact.mensagem,
@@ -141,6 +156,22 @@ export class MainComponent implements OnInit, AfterViewInit {
 
       if (lastMessageContact[0]) {
         if (lastMessageContact[0].content !== contact.mensagem)
+          talk.push(message);
+      }
+      else
+        talk.push(message);
+    }
+    else if(!!contact.ultimoAcesso.mensagem) {
+      
+      const message = {
+        content: contact.ultimoAcesso.mensagem,
+        self: false,
+        url: contact.ultimoAcesso.imagem,
+        enter: false
+      }
+
+      if (lastMessageContact[0]) {
+        if (lastMessageContact[0].content !== contact.ultimoAcesso.mensagem)
           talk.push(message);
       }
       else

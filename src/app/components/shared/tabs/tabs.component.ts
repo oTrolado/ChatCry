@@ -17,11 +17,12 @@ import {
 })
 export class TabsComponent implements OnInit, AfterViewInit {
 
-    animating = false;
-    forward = false;
-    floatInfo = false;
+    animating: boolean = false;
+    forward: boolean = false;
+    floatInfo: boolean = false;
+    floatGroupInfo: boolean = false;
 
-    active = 0;
+    active:number = 0;
 
     filter: string;
     chatList: Array<any> = [];
@@ -31,8 +32,10 @@ export class TabsComponent implements OnInit, AfterViewInit {
     containers: HTMLCollection;
     indicator: HTMLDivElement;
     openContact: Object = { nome: '', imagem: '', ultimoAcesso: '' };
+    openGroup: Object = { nome: '', imagem: '', ultimoAcesso: '' };
 
-    @Input() contactList: any;
+    @Input() contactList: Array<any>;
+    @Input() groupList: Array<any>;
     @Output() menuToggle: EventEmitter<boolean> = new EventEmitter;
     @Output() chat: EventEmitter<any> = new EventEmitter;
 
@@ -145,9 +148,15 @@ export class TabsComponent implements OnInit, AfterViewInit {
         }
     }
 
-    toggleInfo(element?: object, event?: Event): Promise<boolean> {        
-        if (!!element) 
+    toggleContactInfo(element?: any, event?: Event): any {        
+        if (!!element && !!!element.ultimaMensagem) 
             this.openContact = element;
+        else if (!!element){
+            element = JSON.parse(JSON.stringify(element));
+            element.ultimoAcesso = element.ultimaMensagem
+            this.toggleGroupInfo(element);
+            return 'Its a group';
+        }
         if(event)
             event.stopImmediatePropagation();
         
@@ -159,14 +168,34 @@ export class TabsComponent implements OnInit, AfterViewInit {
         }); 
     }
 
+    toggleGroupInfo(element?: object, event?: Event): Promise<boolean> {        
+        if (!!element) 
+            this.openGroup = element;
+        if(event)
+            event.stopImmediatePropagation();
+        
+        return new Promise(resolve => {
+            setTimeout(() => { 
+                this.floatGroupInfo = !this.floatGroupInfo;
+                setInterval(() =>  resolve(this.floatGroupInfo), 100);
+            }, 200);
+        }); 
+    }
+
     clearFilter():any {
         this.filter = null;
         return this.filter;
     }
 
     chatStart(contact: any) {
+        contact = JSON.parse(JSON.stringify(contact));
         this.select(0);
-        if(this.alreadyOpen(contact)) return 'already open'
+        if(this.alreadyOpen(contact)) 
+            return 'already open';
+        if(contact.ultimoAcesso.data){
+            contact.ultimaMensagem = contact.ultimoAcesso;
+            contact.ultimoAcesso = contact.ultimaMensagem.data;
+        }
         this.chatList.push(contact);
         this.chatWith(contact);
     }

@@ -11,7 +11,11 @@
     </div>
 
     <div class="tabs-inner">
-      <tabs [contactList]='contactList' (menuToggle)="menuToggle($event)" (chat)="startChat($event)"></tabs>
+      <tabs [contactList]='contactList' 
+            [groupList]='groupList' 
+            (menuToggle)="menuToggle($event)" 
+            (chat)="startChat($event)">
+      </tabs>
     </div>
   </div>
   <section id="chat-container">

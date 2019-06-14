@@ -43,7 +43,12 @@
     <div class="tab-content" #chatsContainer>
 
       <ng-container *ngTemplateOutlet="searchBox"></ng-container>
-      <chats [chatList]='chatList' [filter]="filter" [activeChat]='activeChat' (toggleInfo)="toggleInfo($event)" (chat)="chatWith($event)"></chats>
+      <chats [chatList]='chatList' 
+              [filter]="filter" 
+              [activeChat]='activeChat' 
+              (toggleInfo)="toggleContactInfo($event)" 
+              (chat)="chatWith($event)">
+      </chats>
 
     </div>
 
@@ -55,7 +60,7 @@
         <h3 class="typo-subtitle1">Contatos</h3>
         <ng-container *ngFor="let contact of contactList | filterContacts: filter ; index as i">
           <div class="contact" (click)="chatStart(contact)" ripple>
-            <img [src]="contact.imagem" alt="Avatar" class="contactAvatar avatar raized" (click)="toggleInfo(contact, $event)" ripple>
+            <img [src]="contact.imagem" alt="Avatar" class="contactAvatar avatar raized" (click)="toggleContactInfo(contact, $event)" ripple>
             <span class="typo-h6">{{contact.nome}}</span>
           </div>
         </ng-container>
@@ -66,7 +71,13 @@
     <div class="tab-content">
 
       <ng-container *ngTemplateOutlet="searchBox"></ng-container>
-    
+      
+      <groups [groupList]='groupList' 
+              [filter]="filter" 
+              (toggleInfo)="toggleGroupInfo($event)"
+              (chat)="chatWith($event); chatStart($event)">
+      </groups>
+
     </div>
 
     <ng-template #searchBox>
@@ -83,7 +94,7 @@
     
   </section>
   <div class="floatInfo raized" [ngStyle]="{'transform' : floatInfo ? 'translateX(0%)' : 'translateX(-100%)'}">
-    <i class="material-icons toggle" (click)="toggleInfo()" ripple>
+    <i class="material-icons toggle" (click)="toggleContactInfo()" ripple>
       close
     </i>
 
@@ -91,4 +102,15 @@
     <h2 class="typo-h4">{{openContact["nome"]}}</h2>
     <h4 class="typo-subtitle2">Ultimo acesso: {{openContact["ultimoAcesso"] | date:'short' }}</h4>
   </div>
+
+  <div class="floatInfo raized" [ngStyle]="{'transform' : floatGroupInfo ? 'translateX(0%)' : 'translateX(-100%)'}">
+      <i class="material-icons toggle" (click)="toggleGroupInfo()" ripple>
+        close
+      </i>
+  
+      <img [src]="openGroup['imagem'] | urlPipe" alt="avatar" class="BigAvatar raized">
+      <h2 class="typo-h4">{{openGroup["nome"]}}</h2>
+      <h4 class="typo-subtitle2">Ultima mensagem: {{openGroup.ultimoAcesso.data | date:'short' }}</h4>
+  </div>
+    
 </div>

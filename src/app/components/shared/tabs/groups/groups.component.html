@@ -1,0 +1,12 @@
+<div class="contactList">
+    <h3 class="typo-subtitle1">Grupos</h3>
+    <ng-container *ngFor="let group of groupList | filterContacts: filter ; index as i">
+      <div class="contact" [ngClass]="{active: activeChat === group.nome}" (click)="startChat(group)" ripple>
+        <img [src]="group.imagem | urlPipe" alt="Avatar" class="chatAvatar avatar raized" (click)="emitInfo(group, $event)" ripple>
+        <span>
+            <div class="typo-h6">{{group.nome}}</div>
+            <div class="typo-subtitle1">{{group.ultimoAcesso.data | date:'short'}}</div>
+        </span>
+      </div>
+    </ng-container>
+</div>

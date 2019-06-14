@@ -40,7 +40,7 @@ button { background-color: transparent; border: none; cursor: pointer;}
 
 .menuItem:last-child { margin: auto 0 10px 0; }; 
 
-.avatar { width: 50px; height: 50px; border-radius: 50%;}
+.avatar { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; }
 
 .userAvatar { margin: 20px auto; }
 
@@ -87,7 +87,7 @@ button { background-color: transparent; border: none; cursor: pointer;}
 }
 .floatInfo h4 {margin-top: 30px;}
 
-.BigAvatar { height: 120px; border-radius: 120px; margin-top: 20px }
+.BigAvatar { height: 120px; border-radius: 120px; margin-top: 20px; width: 120px; object-fit: cover; }
 
 ::-webkit-input-placeholder {
     color: #c6c6c6;
