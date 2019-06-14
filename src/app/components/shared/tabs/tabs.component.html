@@ -47,6 +47,7 @@
               [filter]="filter" 
               [activeChat]='activeChat' 
               (toggleInfo)="toggleContactInfo($event)" 
+              (toggleGroupInfo)="toggleGroupInfo($event)" 
               (chat)="chatWith($event)">
       </chats>
 
@@ -56,16 +57,11 @@
 
       <ng-container *ngTemplateOutlet="searchBox"></ng-container>
 
-      <div class="contactList">
-        <h3 class="typo-subtitle1">Contatos</h3>
-        <ng-container *ngFor="let contact of contactList | filterContacts: filter ; index as i">
-          <div class="contact" (click)="chatStart(contact)" ripple>
-            <img [src]="contact.imagem" alt="Avatar" class="contactAvatar avatar raized" (click)="toggleContactInfo(contact, $event)" ripple>
-            <span class="typo-h6">{{contact.nome}}</span>
-          </div>
-        </ng-container>
-      </div>
-
+      <contacts [contactList]='contactList'
+                [filter]="filter"
+                (toggleInfo)="toggleContactInfo($event)"
+                (chat)="chatStart($event)">
+      </contacts>
       
     </div>
     <div class="tab-content">
@@ -94,7 +90,7 @@
     
   </section>
   <div class="floatInfo raized" [ngStyle]="{'transform' : floatInfo ? 'translateX(0%)' : 'translateX(-100%)'}">
-    <i class="material-icons toggle" (click)="toggleContactInfo()" ripple>
+    <i class="material-icons toggle close" (click)="toggleContactInfo()" ripple>
       close
     </i>
 
@@ -104,13 +100,16 @@
   </div>
 
   <div class="floatInfo raized" [ngStyle]="{'transform' : floatGroupInfo ? 'translateX(0%)' : 'translateX(-100%)'}">
-      <i class="material-icons toggle" (click)="toggleGroupInfo()" ripple>
+      <i class="material-icons toggle close" (click)="toggleGroupInfo()" ripple>
         close
       </i>
   
       <img [src]="openGroup['imagem'] | urlPipe" alt="avatar" class="BigAvatar raized">
-      <h2 class="typo-h4">{{openGroup["nome"]}}</h2>
-      <h4 class="typo-subtitle2">Ultima mensagem: {{openGroup.ultimoAcesso.data | date:'short' }}</h4>
+      <h2 class="typo-h4">{{openGroup.nome}}</h2>
+      <h4 class="typo-subtitle2">Ultima mensagem</h4>
+      <div class="group-last-message">
+        <h4 class="typo-subtitle2">Nome: {{openGroup.ultimoAcesso.usuario}}</h4>
+        <h4 class="typo-subtitle2">Recebida: {{openGroup.ultimoAcesso.data | date:'short' }}</h4>
+      </div>      
   </div>
-    
 </div>

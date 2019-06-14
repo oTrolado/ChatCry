@@ -145,30 +145,25 @@ export class MainComponent implements OnInit, AfterViewInit {
         }
       });
 
-    if (!!contact.mensagem) {
-
-      const message = {
+      let message = {
         content: contact.mensagem,
         self: false,
         url: contact.imagem,
         enter: false
       }
 
+    if (!!contact.mensagem) 
       if (lastMessageContact[0]) {
         if (lastMessageContact[0].content !== contact.mensagem)
           talk.push(message);
       }
       else
         talk.push(message);
-    }
+    
     else if(!!contact.ultimoAcesso.mensagem) {
       
-      const message = {
-        content: contact.ultimoAcesso.mensagem,
-        self: false,
-        url: contact.ultimoAcesso.imagem,
-        enter: false
-      }
+      message.content = contact.ultimoAcesso.mensagem;
+      message.url = contact.ultimoAcesso.imagem;
 
       if (lastMessageContact[0]) {
         if (lastMessageContact[0].content !== contact.ultimoAcesso.mensagem)

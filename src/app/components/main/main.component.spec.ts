@@ -12,6 +12,7 @@ import { FilterContactsPipe } from '../shared/pipes/filter-contacts.pipe';
 import { UrlPipePipe } from '../shared/pipes/url-pipe.pipe';
 import { ChatsComponent } from '../shared/tabs/chats/chats.component';
 import { GroupsComponent } from '../shared/tabs/groups/groups.component';
+import { ContactsComponent } from '../shared/tabs/contacts/contacts.component';
 
 describe('MainComponent', () => {
   let component: MainComponent;
@@ -46,7 +47,8 @@ describe('MainComponent', () => {
         FilterContactsPipe, 
         ChatsComponent,
         UrlPipePipe,
-        GroupsComponent
+        GroupsComponent,
+        ContactsComponent
       ],
       providers: [HttpClient]
     })

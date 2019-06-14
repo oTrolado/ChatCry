@@ -79,6 +79,7 @@
     text-align: center;
 }
 .floatInfo h4 {margin-top: 30px;}
+.group-last-message h4 { margin-top: 0; }
     
 .BigAvatar { height: 120px; border-radius: 50%; margin-top: 20px }
 
@@ -114,7 +115,7 @@
  }
 
  @media screen and (max-width: 800px){
-    .tab-container-wrapper i { display: block; }
+    .tab-container-wrapper i { display: block; color: white;}
 }
 
  @media screen and (max-width: 480px){

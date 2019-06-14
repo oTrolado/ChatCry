@@ -65,26 +65,35 @@ export class TabsComponent implements OnInit, AfterViewInit {
 
         this.indicator = this.header.nativeElement.querySelector('#indicator');
 
-        this.fillMessages(this.contactList);
+        this.fillMessages(this.contactList, this.groupList);
 
         this.resize();
     }
 
-    fillMessages(list) {
-        if(!list)
-            setTimeout(() => this.fillMessages(this.contactList), 50);
-        else{
-            this.chatList = list.filter(contato => contato.mensagem);
-            this.contactList.map( contact => {
-                if(!this.alreadyOpen(contact) && localStorage.getItem('chatCry'+contact.nome))
-                    this.chatList.push(contact)                
-                
-            });
-            if(this.chatList.length > 0)
-                this.chatWith(this.chatList[0]);
-        }
+    fillMessages(listContact, listGroup) {
+        if(!listContact || !listGroup)
+            setTimeout(() => this.fillMessages(this.contactList, this.groupList), 50);
+        else
+            setTimeout(() => {
+                this.chatList = listContact.filter(contato => contato.mensagem);//enche com os contatos que tem mensagem
+                this.contactList.map( contact => {//enche com mensagens armazenadas
+                    if(!this.alreadyOpen(contact) && localStorage.getItem('chatCry'+contact.nome))
+                        this.chatList.push(contact)                
+                });
+                listGroup.map(group => {//prenche a lista com os grupos
+                    if(group.ultimoAcesso.mensagem)
+                        this.chatStart(group);
+                    else if(!this.alreadyOpen(group) && localStorage.getItem('chatCry'+group.nome))
+                        this.chatList.push(group); 
+                    
+                });
+                if(this.chatList.length > 0)
+                    this.chatWith(this.chatList[0]);
+            },200);
+        
         return this.contactList;
     }
+
 
     mouseover(item): void {
         if (item == this.active) {
@@ -104,7 +113,6 @@ export class TabsComponent implements OnInit, AfterViewInit {
     }
 
     changeContent(content: number): Promise<any> {
-
         this.animating = true;
 
         const actual = this.container.nativeElement.children[this.active];
@@ -126,7 +134,6 @@ export class TabsComponent implements OnInit, AfterViewInit {
                 resolve(this.active);
             }, 490);
         });
-        
     }
 
 
@@ -149,14 +156,9 @@ export class TabsComponent implements OnInit, AfterViewInit {
     }
 
     toggleContactInfo(element?: any, event?: Event): any {        
-        if (!!element && !!!element.ultimaMensagem) 
+        if (!!element) 
             this.openContact = element;
-        else if (!!element){
-            element = JSON.parse(JSON.stringify(element));
-            element.ultimoAcesso = element.ultimaMensagem
-            this.toggleGroupInfo(element);
-            return 'Its a group';
-        }
+        
         if(event)
             event.stopImmediatePropagation();
         
@@ -168,7 +170,7 @@ export class TabsComponent implements OnInit, AfterViewInit {
         }); 
     }
 
-    toggleGroupInfo(element?: object, event?: Event): Promise<boolean> {        
+    toggleGroupInfo(element?: object, event?: Event): Promise<boolean> {                
         if (!!element) 
             this.openGroup = element;
         if(event)

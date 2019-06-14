@@ -22,8 +22,19 @@
     background-color: #EEEEEE;
 }
 
-.toolbar { display: none; }
-
+.toolbar { 
+    background-color: $primary;
+    height: 50px;
+    color: $light-text;
+    display: flex;
+    flex-direction: row;
+    padding: 10px 30px;
+    box-sizing: border-box;
+    justify-content: space-between;
+    position: absolute;
+    width: 100%;
+}
+.divider { background-color: $dark-text; height: 1px; width: 95%; margin: auto;}
 
 @media screen and (min-width: 1300px){
     .tabs-inner { width: 350px;}
@@ -45,25 +56,14 @@
     }
     .tabs-inner { width:calc(100% - 80px); }
     #chat-container { width: 100%; padding-top: 50px; } 
-    .toolbar { 
-        background-color: $primary;
-        height: 50px;
-        color: $light-text;
-        display: flex;
-        flex-direction: row;
-        padding: 10px 5px;
-        box-sizing: border-box;
-        justify-content: space-between;
-        position: absolute;
-        width: 100%;
-     }
+    
 
 }
 
 @media screen and (max-width: 480px){
     
 
-    #sidebar { width: 60px; }
+    #sidebar { width: 60px; height: 100%;}
     .tabs-inner { width:calc(100% - 60px); }
     
 

@@ -1,0 +1,9 @@
+<div class="contactList">
+  <h3 class="typo-subtitle1">Contatos</h3>
+  <ng-container *ngFor="let contact of contactList | filterContacts: filter ; index as i">
+    <div class="contact" (click)="chatStart(contact)" ripple>
+      <img [src]="contact.imagem" alt="Avatar" class="contactAvatar avatar raized" (click)="emitInfo(contact, $event)" ripple>
+      <span class="typo-h6">{{contact.nome}}</span>
+    </div>
+  </ng-container>
+</div>
