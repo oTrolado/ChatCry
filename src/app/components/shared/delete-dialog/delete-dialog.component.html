@@ -1,0 +1,9 @@
+<div class="dialog-container" *ngIf="show">
+  <div class="dialog raized">
+    <ng-content></ng-content>
+    <div class="button-container">
+      <button class="typo-button text-button warn" (click)="emit(false)" ripple>Cancelar</button>
+      <button class="typo-button text-button primary" (click)="emit(true)" ripple>Confirmar</button>
+    </div>
+  </div>
+</div>

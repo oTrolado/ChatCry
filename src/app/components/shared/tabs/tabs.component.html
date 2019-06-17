@@ -31,10 +31,6 @@
 </header>
 <div class="tab-container-wrapper">
 
-  <i class="material-icons toggle menu" (click)="menutoggle()" ripple>
-    menu
-  </i>
-
   <section id="tabs-container" [ngClass]="{
                                             'anamitaion-forward': animating && forward, 
                                             'anamitaion-backward': animating && !forward
@@ -48,7 +44,8 @@
               [activeChat]='activeChat' 
               (toggleInfo)="toggleContactInfo($event)" 
               (toggleGroupInfo)="toggleGroupInfo($event)" 
-              (chat)="chatWith($event)">
+              (chat)="chatWith($event)"
+              (delete)="deleteChat($event)">
       </chats>
 
     </div>
@@ -112,4 +109,8 @@
         <h4 class="typo-subtitle2">Recebida: {{openGroup.ultimoAcesso.data | date:'short' }}</h4>
       </div>      
   </div>
+  <delete-dialog [show]="deletingChat" (response)="deleteChatResponse($event)">
+    <h1 class="typo-h4">Deletar Conversa?</h1>
+    <h5 class="typo-subtitle1">Atenção, esta ação é irrevesível, após confirmada ela não poderá ser desfeita. Confirmar?</h5>
+  </delete-dialog>
 </div>

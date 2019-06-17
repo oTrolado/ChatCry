@@ -7,7 +7,8 @@ import {
     Renderer2,
     Input,
     Output,
-    EventEmitter
+    EventEmitter,
+    OnChanges
 } from '@angular/core';
 
 @Component({
@@ -15,7 +16,7 @@ import {
     templateUrl: './tabs.component.html',
     styleUrls: ['./tabs.component.scss']
 })
-export class TabsComponent implements OnInit, AfterViewInit {
+export class TabsComponent implements OnInit, AfterViewInit, OnChanges {
 
     animating: boolean = false;
     forward: boolean = false;
@@ -27,6 +28,7 @@ export class TabsComponent implements OnInit, AfterViewInit {
     filter: string;
     chatList: Array<any> = [];
     activeChat: string;
+    deletingChat: any;
 
     headers: HTMLCollection;
     containers: HTMLCollection;
@@ -65,32 +67,32 @@ export class TabsComponent implements OnInit, AfterViewInit {
 
         this.indicator = this.header.nativeElement.querySelector('#indicator');
 
-        this.fillMessages(this.contactList, this.groupList);
-
         this.resize();
     }
 
+    ngOnChanges() {
+        this.fillMessages(this.contactList, this.groupList); 
+    }
+
     fillMessages(listContact, listGroup) {
-        if(!listContact || !listGroup)
-            setTimeout(() => this.fillMessages(this.contactList, this.groupList), 50);
-        else
-            setTimeout(() => {
-                this.chatList = listContact.filter(contato => contato.mensagem);//enche com os contatos que tem mensagem
-                this.contactList.map( contact => {//enche com mensagens armazenadas
-                    if(!this.alreadyOpen(contact) && localStorage.getItem('chatCry'+contact.nome))
-                        this.chatList.push(contact)                
-                });
-                listGroup.map(group => {//prenche a lista com os grupos
-                    if(group.ultimoAcesso.mensagem)
-                        this.chatStart(group);
-                    else if(!this.alreadyOpen(group) && localStorage.getItem('chatCry'+group.nome))
-                        this.chatList.push(group); 
-                    
-                });
-                if(this.chatList.length > 0)
-                    this.chatWith(this.chatList[0]);
-            },200);
-        
+        if(listContact)            
+            listContact.map(contact => {//prenche a lista com os grupos
+                if(contact.mensagem && !this.alreadyOpen(contact)){                
+                    this.chatList.push(this.parseContact(contact));}
+                else if(!this.alreadyOpen(contact) && localStorage.getItem('chatCry'+contact.nome))
+                    this.chatList.push(this.parseContact(contact)); 
+            });
+        if(listGroup)  
+            listGroup.map(group => {//prenche a lista com os grupos
+                if(group.ultimoAcesso.mensagem && !this.alreadyOpen(group))               
+                    this.chatList.push(this.parseContact(group));
+                else if(!this.alreadyOpen(group) && localStorage.getItem('chatCry'+group.nome))
+                    this.chatList.push(this.parseContact(group)); 
+                
+            });
+        if(this.chatList.length > 0 && !this.activeChat)
+            this.chatWith(this.chatList[0]);
+            
         return this.contactList;
     }
 
@@ -189,8 +191,17 @@ export class TabsComponent implements OnInit, AfterViewInit {
         return this.filter;
     }
 
-    chatStart(contact: any) {
+    parseContact(contact: any) {
         contact = JSON.parse(JSON.stringify(contact));
+        if(contact.ultimoAcesso.data){
+            contact.ultimaMensagem = contact.ultimoAcesso;
+            contact.ultimoAcesso = contact.ultimaMensagem.data;
+        }
+        return contact;
+    }
+
+    chatStart(contact: any) {
+        contact = this.parseContact(contact);
         this.select(0);
         if(this.alreadyOpen(contact)) 
             return 'already open';
@@ -212,6 +223,31 @@ export class TabsComponent implements OnInit, AfterViewInit {
         let chatsFiltred = this.chatList.filter( chat => chat.nome === contact.nome);
         if(chatsFiltred.length > 0) return true;
         else return false;
+    }
+
+    deleteChatResponse(response: boolean): any {
+        let res;
+        if(response) {
+            res = this.chatList.splice(this.deletingChat, 1)[0];
+            if(this.chatList[this.deletingChat -1])
+                this.chatWith(this.chatList[0]);
+
+            else if(this.chatList[0])
+                this.chatWith(this.chatList[0]);
+
+            if(localStorage.getItem('chatCry'+res.nome))
+                localStorage.removeItem('chatCry'+res.nome);
+        }
+        else 
+            res = this.chatList;
+        setTimeout(() => this.deletingChat = undefined, 400);
+        return res;
+    }
+
+    deleteChat(nome: string): any {
+        this.chatList.map((chat, index)=>{ 
+            if(chat.nome === nome) this.deletingChat = index;
+        });        
     }
 
 }

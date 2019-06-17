@@ -17,6 +17,7 @@ import { ChatsComponent } from './components/shared/tabs/chats/chats.component';
 import { UrlPipePipe } from './components/shared/pipes/url-pipe.pipe';
 import { GroupsComponent } from './components/shared/tabs/groups/groups.component';
 import { ContactsComponent } from './components/shared/tabs/contacts/contacts.component';
+import { DeleteDialogComponent } from './components/shared/delete-dialog/delete-dialog.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { ContactsComponent } from './components/shared/tabs/contacts/contacts.co
     ChatsComponent,
     UrlPipePipe,
     GroupsComponent,
-    ContactsComponent
+    ContactsComponent,
+    DeleteDialogComponent
   ],
   imports: [
     BrowserModule,

@@ -44,7 +44,11 @@ export class MainComponent implements OnInit, AfterViewInit {
     } else {
       this.router.navigate(['']);
     }
+    this.fetchData();
+    setInterval(() => this.fetchData(), 60000);
+  }
 
+  fetchData() {
     this.contacts.getContacts()
       .subscribe(
         res => {
@@ -62,15 +66,15 @@ export class MainComponent implements OnInit, AfterViewInit {
       );
 
     this.groupS.getGroups()
-        .subscribe(
-          res => {
-            const sorted: any = res;
-            this.groupList = sorted.sort((a, b) => (a.nome > b.nome) ? 1 : (a.nome < b.nome) ? -1 : 0);
-          },
-          error => console.error(error)
-        );
-
+      .subscribe(
+        res => {
+          const sorted: any = res;
+          this.groupList = sorted.sort((a, b) => (a.nome > b.nome) ? 1 : (a.nome < b.nome) ? -1 : 0);
+        },
+        error => console.error(error)
+      );
   }
+
   ngAfterViewInit() {
     this.render.setAttribute(this.avatar.nativeElement, 'src', this.user['avatar']);
   }
@@ -160,17 +164,18 @@ export class MainComponent implements OnInit, AfterViewInit {
       else
         talk.push(message);
     
-    else if(!!contact.ultimoAcesso.mensagem) {
-      
-      message.content = contact.ultimoAcesso.mensagem;
-      message.url = contact.ultimoAcesso.imagem;
+    else if(!!contact.ultimaMensagem) {
+      if(contact.ultimaMensagem.mensagem) {
+        message.content = contact.ultimaMensagem.mensagem;
+        message.url = contact.ultimaMensagem.imagem;
 
-      if (lastMessageContact[0]) {
-        if (lastMessageContact[0].content !== contact.ultimoAcesso.mensagem)
+        if (lastMessageContact[0]) {
+          if (lastMessageContact[0].content !== contact.ultimaMensagem.mensagem)
+            talk.push(message);
+        }
+        else
           talk.push(message);
       }
-      else
-        talk.push(message);
     }
 
     this.lastTalk = contact;

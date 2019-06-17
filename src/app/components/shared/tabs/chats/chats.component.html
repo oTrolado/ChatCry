@@ -1,6 +1,6 @@
 <div class="contactList">
     <h3 class="typo-subtitle1">Conversas</h3>
-    <ng-container *ngFor="let chat of chatList | filterContacts: filter ; index as i">
+    <div *ngFor="let chat of chatList | filterContacts: filter ; index as i" class="contactWrapper">
       <div class="contact" [ngClass]="{active: activeChat === chat.nome}" (click)="startChat(chat)" ripple>
         <img [src]="chat.imagem | urlPipe" alt="Avatar" class="chatAvatar avatar raized" (click)="emitInfo(chat, $event)" ripple>
         <span>
@@ -8,5 +8,15 @@
             <div class="typo-subtitle1">{{chat.ultimoAcesso | date:'short'}}</div>
         </span>
       </div>
-    </ng-container>
+      <span class="submenu" tabindex="0" (blur)="toggleMenu(menu, more)" (focus)="rotateMore(more, 360); toggleMenu(menu)">
+          <i class="material-icons" (click)="rotateMore(more, 360); toggleMenu(menu)" #more ripple> 
+            more_vert
+          </i>
+        <div class="menuHidden raized typo-subtitle1" #menu>
+          <ul>
+            <li (click)="remove(chat)" ripple>Deletar</li>
+          </ul>
+        </div>
+      </span> 
+    </div>
 </div>

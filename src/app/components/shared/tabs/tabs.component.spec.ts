@@ -7,6 +7,7 @@ import { UrlPipePipe } from '../pipes/url-pipe.pipe';
 import { ChatsComponent } from './chats/chats.component';
 import { GroupsComponent } from './groups/groups.component';
 import { ContactsComponent } from './contacts/contacts.component';
+import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
 
 describe('TabsComponent', () => {
   let component: TabsComponent;
@@ -38,6 +39,8 @@ describe('TabsComponent', () => {
     }
   }
 
+  let chatMock = [contatoMock, contatoMock2, groupMock, group2Mock];
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ 
@@ -46,7 +49,8 @@ describe('TabsComponent', () => {
         ChatsComponent, 
         UrlPipePipe ,
         GroupsComponent,
-        ContactsComponent
+        ContactsComponent,
+        DeleteDialogComponent
       ],
       imports: [FormsModule]
     })
@@ -123,7 +127,20 @@ describe('TabsComponent', () => {
     await setTimeout(() =>{
       expect(component.chatList[0]).toEqual(contatoMock2);
       expect(component.chatList[1]).toEqual(group2Mock);
-    }, 400)
+    }, 2100)
+    
+  });
+
+  it('Teste de remoção do chat', async ()=> {
+    component.contactList = [],
+    component.groupList = [],
+    component.chatList = Array.from(chatMock);
+    component.deleteChat(chatMock[1].nome);
+    const deleted = component.deleteChatResponse(true);
+    await setTimeout(() => {
+      expect(deleted).toEqual(chatMock[1]);
+    }, 100)
+    
     
   });
   

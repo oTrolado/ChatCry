@@ -13,6 +13,8 @@ import { UrlPipePipe } from '../shared/pipes/url-pipe.pipe';
 import { ChatsComponent } from '../shared/tabs/chats/chats.component';
 import { GroupsComponent } from '../shared/tabs/groups/groups.component';
 import { ContactsComponent } from '../shared/tabs/contacts/contacts.component';
+import { DeleteDialogComponent } from '../shared/delete-dialog/delete-dialog.component';
+
 
 describe('MainComponent', () => {
   let component: MainComponent;
@@ -24,7 +26,7 @@ describe('MainComponent', () => {
   let groupMock: any = {
     nome: "Cs na casa do mario",
     imagem: "http://cdn.vs.com.br/webedia-temp/1546522793354-csgo-duas-rambos.png",
-    ultimoAcesso:{ 
+    ultimaMensagem:{ 
         data: new Date(),
         mensagem: "Perdi o pedal!",
         usuario: "Aquele Carinha",
@@ -48,7 +50,8 @@ describe('MainComponent', () => {
         ChatsComponent,
         UrlPipePipe,
         GroupsComponent,
-        ContactsComponent
+        ContactsComponent,
+        DeleteDialogComponent
       ],
       providers: [HttpClient]
     })

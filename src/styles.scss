@@ -44,9 +44,9 @@ button { background-color: transparent; border: none; cursor: pointer;}
 
 .userAvatar { margin: 20px auto; }
 
-.toggle { position: absolute; top: 2px; left: 2px; cursor: pointer; z-index: 1; border-radius: 3px;}
-.menu { position: fixed; background-color: rgba(255, 255, 255, 0.5); }
-.close { left: auto; right: 2px; color: $dark-text!important;}
+.toggle { position: fixed; top: 12px; left: 2px; cursor: pointer; z-index: 1; border-radius: 3px;}
+
+.close { left: auto; top: 2px; right: 2px; color: $dark-text!important;}
 
 
 .searchBox { position: relative; width: calc(100% - 20px); margin: 20px auto; }

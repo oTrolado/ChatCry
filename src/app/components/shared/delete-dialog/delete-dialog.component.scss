@@ -1,0 +1,28 @@
+.dialog-container {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9;
+    background-color: #FFFFFFbb;
+    color: #6e6e6e;
+}
+
+.dialog {
+    background-color: white;
+    width: 90%;
+    max-width: 640px;
+    border-radius: 2px;
+    margin: calc(50vh - 216px) auto 0 auto;
+    box-sizing: border-box;
+    padding: 25px;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.button-container button:last-child {
+    margin-left: 5px;
+}
