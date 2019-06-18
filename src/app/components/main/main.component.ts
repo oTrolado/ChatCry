@@ -21,7 +21,7 @@ export class MainComponent implements OnInit, AfterViewInit {
   user: Object;
   newMessage: Object;
   
-  contactList: any;
+  contactList: any = [];
   groupList: any = [];
   
   newChat: Array<any> = [];
@@ -55,14 +55,7 @@ export class MainComponent implements OnInit, AfterViewInit {
           const sorted: any = res;
           this.contactList = sorted.sort((a, b) => (a.nome > b.nome) ? 1 : (a.nome < b.nome) ? -1 : 0);
         },
-        error => {
-          console.error(error);
-          this.contactList = [{
-            nome: 'Error ' + error.status,
-            ultimoAcesso: new Date(),
-            imagem: 'https://media.giphy.com/media/YIQG7dmoR6geY/giphy.gif'
-          }];
-        }
+        error => alert('Não foi possivel conectar ao servidor :´(')
       );
 
     this.groupS.getGroups()
