@@ -192,10 +192,10 @@ export class LoginComponent implements OnInit {
   avatarLoaded(input): void {
 
     const reader: FileReader = new FileReader();
-    reader.addEventListener('load', (event) => {
+    reader.addEventListener('load', (event:any) => {
       this.render.setStyle(this.avatar.nativeElement, 'visibility', 'visible');
-      this.render.setAttribute(this.avatar.nativeElement, 'src', event.target['result']);
-      this.user.avatar = event.target['result'];
+      this.render.setAttribute(this.avatar.nativeElement, 'src', event.target.result);
+      this.user.avatar = event.target.result;
     });
     reader.readAsDataURL(input.files[0]);
 

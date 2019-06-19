@@ -3,7 +3,7 @@
 .submenu {position: absolute; cursor: pointer; left: auto; right: 0px; top: 2px;}
 .submenu:focus {outline: none;}
 .submenu i { transition: .5s transform cubic-bezier(0.4, 0.0, 0.2, 1); border-radius: 50%; font-size: 36px;}
-.menuHidden { display: none; position: absolute; left: auto; top: -2px; right: 0px; width: 230px; background: white;}
+.menuHidden { display: none; position: absolute; left: auto; top: -2px; right: 0px; width: 230px; background: white; z-index: 1;}
 .menuHidden ul {list-style: none; width: 100%}
 .menuHidden li {cursor: pointer; width: 100%; box-sizing: border-box; padding: 10px 20px; transition: .5s transform cubic-bezier(0.4, 0.0, 0.2, 1);}
 li:hover{ background-color: rgba(231, 231, 231, 0.71);}
