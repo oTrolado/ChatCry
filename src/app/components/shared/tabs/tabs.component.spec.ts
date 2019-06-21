@@ -67,6 +67,14 @@ describe('TabsComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('Teste de mudança de tab', async () => {
+    component.active = 0;
+    component.select(1).then(
+      succes => expect(succes).toBe(1),
+      err => {throw err;}
+    )
+  });
+
   it('Teste do card de informações de contato', async () => {
     component.floatInfo = true;
     
@@ -136,10 +144,27 @@ describe('TabsComponent', () => {
     component.groupList = [],
     component.chatList = Array.from(chatMock);
     component.deleteChat(chatMock[1].nome);
+    
     const deleted = component.deleteChatResponse(true);
+    
     await setTimeout(() => {
       expect(deleted).toEqual(chatMock[1]);
-    }, 100)
+    }, 100);
+    
+    
+  });
+
+  it('Teste de irremoção do chat', async ()=> {
+    component.contactList = [],
+    component.groupList = [],
+    component.chatList = [contatoMock];
+    component.deleteChat(contatoMock);
+    
+    const res = component.deleteChatResponse(false);
+    
+    await setTimeout(() => {
+      expect(res).toEqual([contatoMock]);
+    }, 100);
     
     
   });

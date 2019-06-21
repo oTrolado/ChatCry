@@ -26,9 +26,15 @@ describe('TypeBarComponent', () => {
   it('Teste do input de senha sendo ativado', async () => {
     component.type = 'password';
     component.password = true;
-    await setTimeout( () => expect(
-      component.input.nativeElement.type
-    ).toBe('password'), 100);
+    await setTimeout( () => {
+      expect(
+        component.input.nativeElement.type
+      ).toBe('password');
+      component.send();
+      expect(
+        component.input.nativeElement.value
+      ).toBe('');
+    }, 100);
   });
 
   it('Teste de envio da mensagem na textarea', () =>{
@@ -38,14 +44,5 @@ describe('TypeBarComponent', () => {
     component.send();
 
     expect(component.textarea.nativeElement.value).toBe('');
-  });
-
-  it('Teste de envio da mensagem do input', async () =>{
-    component.type = 'password';
-    await setTimeout( () => {
-      component.input.nativeElement.value = '1234';
-      component.send();
-      expect(component.input.nativeElement.value).toBe('');
-    }, 200);
   });
 });
