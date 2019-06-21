@@ -41,11 +41,11 @@ describe('TypeBarComponent', () => {
   });
 
   it('Teste de envio da mensagem do input', async () =>{
-    component.password = true;
+    component.type = 'password';
     await setTimeout( () => {
       component.input.nativeElement.value = '1234';
       component.send();
       expect(component.input.nativeElement.value).toBe('');
-    }, 100);
+    }, 200);
   });
 });
