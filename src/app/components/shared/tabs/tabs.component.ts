@@ -33,8 +33,8 @@ export class TabsComponent implements OnInit, AfterViewInit, OnChanges {
     headers: HTMLCollection;
     containers: HTMLCollection;
     indicator: HTMLDivElement;
-    openContact: Object = { nome: '', imagem: '', ultimoAcesso: '' };
-    openGroup: Object = { nome: '', imagem: '', ultimoAcesso: '' };
+    openContact: any = { nome: '', imagem: '', ultimoAcesso: '' };
+    openGroup: any = { nome: '', imagem: '', ultimoAcesso: '' };
 
     @Input() contactList: Array<any>;
     @Input() groupList: Array<any>;
@@ -76,7 +76,7 @@ export class TabsComponent implements OnInit, AfterViewInit, OnChanges {
 
     fillMessages(listContact, listGroup) {
         if(listContact)            
-            listContact.map(contact => {//prenche a lista com os grupos
+            listContact.map(contact => {//prenche a lista com os contatos
                 if(contact.mensagem && !this.alreadyOpen(contact)){                
                     this.chatList.push(this.parseContact(contact));}
                 else if(!this.alreadyOpen(contact) && localStorage.getItem('chatCry'+contact.nome))
@@ -167,7 +167,7 @@ export class TabsComponent implements OnInit, AfterViewInit, OnChanges {
         return new Promise(resolve => {
             setTimeout(() => { 
                 this.floatInfo = !this.floatInfo;
-                setInterval(() =>  resolve(this.floatInfo), 100);
+                setTimeout(() =>  resolve(this.floatInfo), 100);
             }, 200);
         }); 
     }
@@ -211,6 +211,7 @@ export class TabsComponent implements OnInit, AfterViewInit, OnChanges {
         }
         this.chatList.push(contact);
         this.chatWith(contact);
+        return this.chatList;
     }
 
     chatWith(contact) {
@@ -241,6 +242,7 @@ export class TabsComponent implements OnInit, AfterViewInit, OnChanges {
         else 
             res = this.chatList;
         setTimeout(() => this.deletingChat = undefined, 400);
+        
         return res;
     }
 

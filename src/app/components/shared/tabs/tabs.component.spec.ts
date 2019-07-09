@@ -13,41 +13,41 @@ describe('TabsComponent', () => {
   let component: TabsComponent;
   let fixture: ComponentFixture<TabsComponent>;
 
-  let contatoMock: any = {
-    imagem:'teste', nome:'Testildo Matanildo', ultimoAcesso: new Date(), mensagem:'Ola joe'
-  }
-  let contatoMock2: any = {
-    imagem:'teste', nome:'Mario Noitildo', ultimoAcesso: new Date()
-  }
-  let groupMock: any = {
-    "nome": "Cs na casa do mario",
-    "imagem": "http://cdn.vs.com.br/webedia-temp/1546522793354-csgo-duas-rambos.png",
-    "ultimoAcesso":{ 
-        "data": new Date(),
-        "mensagem": "Perdi o pedal!",
-        "usuario": "Aquele Carinha",
-        "imagem": "https://randomuser.me/api/portraits/women/53.jpg"
+  const contatoMock: any = {
+    imagem: 'teste', nome: 'Testildo Matanildo', ultimoAcesso: new Date(), mensagem: 'Ola joe'
+  };
+  const contatoMock2: any = {
+    imagem: 'teste', nome: 'Mario Noitildo', ultimoAcesso: new Date()
+  };
+  const groupMock: any = {
+    nome: 'Cs na casa do mario',
+    imagem: 'http://cdn.vs.com.br/webedia-temp/1546522793354-csgo-duas-rambos.png',
+    ultimoAcesso: {
+        data: new Date(),
+        mensagem: 'Perdi o pedal!',
+        usuario: 'Aquele Carinha',
+        imagem: 'https://randomuser.me/api/portraits/women/53.jpg'
     }
-  }
-  let group2Mock: any = {
-    "nome": "Cs na casa do mario",
-    "imagem": "http://cdn.vs.com.br/webedia-temp/1546522793354-csgo-duas-rambos.png",
-    "ultimoAcesso":{ 
-        "data": new Date(),
-        "usuario": "Aquele Carinha",
-        "imagem": "https://randomuser.me/api/portraits/women/53.jpg"
+  };
+  const group2Mock: any = {
+    nome: 'Cs na casa do mario',
+    imagem: 'http://cdn.vs.com.br/webedia-temp/1546522793354-csgo-duas-rambos.png',
+    ultimoAcesso: {
+        data: new Date(),
+        usuario: 'Aquele Carinha',
+        imagem: 'https://randomuser.me/api/portraits/women/53.jpg'
     }
-  }
+  };
 
-  let chatMock = [contatoMock, contatoMock2, groupMock, group2Mock];
+  const chatMock = [contatoMock, contatoMock2, groupMock, group2Mock];
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ 
-        TabsComponent, 
-        FilterContactsPipe, 
-        ChatsComponent, 
-        UrlPipePipe ,
+      declarations: [
+        TabsComponent,
+        FilterContactsPipe,
+        ChatsComponent,
+        UrlPipePipe,
         GroupsComponent,
         ContactsComponent,
         DeleteDialogComponent
@@ -71,13 +71,13 @@ describe('TabsComponent', () => {
     component.active = 0;
     component.select(1).then(
       succes => expect(succes).toBe(1),
-      err => {throw err;}
-    )
+      err => { throw err; }
+    );
   });
 
   it('Teste do card de informações de contato', async () => {
     component.floatInfo = true;
-    
+
     await component.toggleContactInfo()
     .then(floatInfo => expect(floatInfo).toBe(false));
 
@@ -104,14 +104,6 @@ describe('TabsComponent', () => {
     expect(component.clearFilter()).toBeNull();
   });
 
-  it('Teste do filtro de contatos com mensagem', async () => {
-
-    expect(component.chatList).toEqual([]);
-    component.contactList = [contatoMock];
-    await setTimeout(() => expect(component.chatList).toEqual([contatoMock]),600);
-
-  });
-
   it('Teste do filtro se contato já esta na lista de chats', () => {
     component.chatList = [contatoMock];
     expect(component.alreadyOpen(contatoMock)).toBe(true);
@@ -131,42 +123,39 @@ describe('TabsComponent', () => {
       'chatCry' + group2Mock.nome,
       JSON.stringify(group2Mock)
     );
-    component.fillMessages([contatoMock2],[group2Mock]);
-    await setTimeout(() =>{
+    component.fillMessages([contatoMock2], [group2Mock]);
+    await setTimeout(() => {
       expect(component.chatList[0]).toEqual(contatoMock2);
       expect(component.chatList[1]).toEqual(group2Mock);
-    }, 2100)
-    
+    }, 2100);
   });
 
-  it('Teste de remoção do chat', async ()=> {
-    component.contactList = [],
-    component.groupList = [],
+  it('Teste de inicio de chat com contato', () => {
+    component.chatList = [];
+    expect(component.chatStart(contatoMock)[0].nome).toEqual(contatoMock.nome);
+  });
+
+  it('Teste de remoção do chat', async () => {
+    component.contactList = [];
+    component.groupList = [];
     component.chatList = Array.from(chatMock);
-    component.deleteChat(chatMock[1].nome);
-    
+    component.deleteChat(chatMock[0]);
+
     const deleted = component.deleteChatResponse(true);
-    
-    await setTimeout(() => {
-      expect(deleted).toEqual(chatMock[1]);
-    }, 100);
-    
-    
+
+    expect(deleted).toEqual(chatMock[0]);
   });
 
-  it('Teste de irremoção do chat', async ()=> {
+  it('Teste de irremoção do chat', async () => {
     component.contactList = [],
     component.groupList = [],
     component.chatList = [contatoMock];
     component.deleteChat(contatoMock);
-    
-    const res = component.deleteChatResponse(false);
-    
+
+    const res = component.deleteChatResponse(false)[0];
+
     await setTimeout(() => {
-      expect(res).toEqual([contatoMock]);
+      expect(res).toEqual(contatoMock.nome);
     }, 100);
-    
-    
   });
-  
 });

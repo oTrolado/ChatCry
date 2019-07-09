@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { UrlPipePipe } from '../../pipes/url-pipe.pipe';
 import { FilterContactsPipe } from '../../pipes/filter-contacts.pipe';
 import { ChatsComponent } from './chats.component';
+import { WSA_E_NO_MORE } from 'constants';
 
 describe('ChatsComponent', () => {
   let component: ChatsComponent;
@@ -45,6 +46,19 @@ describe('ChatsComponent', () => {
 
   it('Teste de emissão de chat do contato/grupo', ()=> {
     expect(component.startChat(groupMock)).toEqual(groupMock);
+  });
+
+  it('Teste do togglemenu', async ()=>{
+    let menu = document.createElement('div');
+    menu.style.display = 'flex';
+
+    let more = document.createElement('i');
+    component.toggleMenu(menu, more);
+
+    await setTimeout(() => {
+      expect(menu.style.display).toBe('none');
+      expect(more.style.transform).toBe('rotate(0deg)');
+    }, 500);
   });
 
 });
